@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MotoManual Pro - Inicio</title>
+    <style>
+        :root {
+            --color-primario: #e63946;
+            --color-primario-oscuro: #c1121f;
+            --color-secundario: #f8f9fa;
+            --color-accento: #457b9d;
+            --color-accento-oscuro: #3f6f8d;
+            --color-texto: #2b2d42;
+            --color-fondo: #f1faee;
+            --sombra: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --sombra-hover: 0 10px 15px rgba(0, 0, 0, 0.15);
+            --degradado: linear-gradient(135deg, #e63946 0%, #457b9d 100%);
+            --radio-borde: 12px;
+            --transicion: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--color-fondo);
+            margin: 0;
+            padding: 0;
+            color: var(--color-texto);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: var(--degradado);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--radio-borde);
+            margin-bottom: 40px;
+            box-shadow: var(--sombra);
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.8rem;
+            position: relative;
+            z-index: 2;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            opacity: 0.9;
+        }
+        
+        .header::after {
+            content: "🏍️";
+            position: absolute;
+            font-size: 12rem;
+            opacity: 0.08;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+            animation: flotar 6s ease-in-out infinite;
+        }
+        
+        @keyframes flotar {
+            0%, 100% { transform: translateY(-50%) rotate(-5deg); }
+            50% { transform: translateY(-55%) rotate(5deg); }
+        }
+        
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 10px;
+        }
+        
+        .menu-card {
+            background: white;
+            border-radius: var(--radio-borde);
+            overflow: hidden;
+            box-shadow: var(--sombra);
+            transition: var(--transicion);
+            border-top: 4px solid var(--color-primario);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .menu-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--sombra-hover);
+        }
+        
+        .menu-card-header {
+            background: var(--color-secundario);
+            padding: 20px;
+            color: var(--color-primario);
+            font-weight: bold;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .menu-card-header span {
+            font-size: 1.5rem;
+        }
+        
+        .menu-card-content {
+            padding: 20px;
+            color: #555;
+            flex-grow: 1;
+        }
+        
+        .menu-card-content p {
+            margin: 0;
+        }
+        
+        .menu-card-button {
+            display: block;
+            background: var(--color-accento);
+            color: white;
+            text-align: center;
+            padding: 14px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transicion);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.9rem;
+            margin: 0 15px 15px;
+            border-radius: 8px;
+        }
+        
+        .menu-card-button:hover {
+            background: var(--color-accento-oscuro);
+            transform: translateY(-2px);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 60px;
+            color: var(--color-texto);
+            font-size: 0.9rem;
+            background: white;
+            border-radius: var(--radio-borde);
+            box-shadow: var(--sombra);
+        }
+        
+        .badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: var(--color-primario);
+            color: white;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+        
+        .coming-soon {
+            position: relative;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .header p {
+                font-size: 1rem;
+            }
+            
+            .menu-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .header::after {
+                font-size: 8rem;
+                right: 10px;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>MotoManual Pro <i class="fas fa-motorcycle"></i></h1>
+            <p>Tu guía completa para el mantenimiento y reparación de motocicletas</p>
+        </div>
+        
+        <div class="menu-grid">
+            <div class="menu-card">
+                <div class="menu-card-header">
+                    <span><i class="fas fa-tools"></i></span> Problemas Comunes
+                </div>
+                <div class="menu-card-content">
+                    <p>Accede a una base de datos de los problemas más frecuentes organizados por marca y modelo, con sus respectivas soluciones detalladas paso a paso.</p>
+                </div>
+                <a href="problemas comunes.html" class="menu-card-button">Abrir <i class="fas fa-arrow-right"></i></a>
+            </div>
+            
+            <div class="menu-card">
+                <div class="menu-card-header">
+                    <span><i class="fas fa-book"></i></span> Manual de Motocicletas
+                </div>
+                <div class="menu-card-content">
+                    <p>Manuales de servicio completos para diferentes modelos de motocicletas, con especificaciones técnicas y procedimientos detallados.</p>
+                </div>
+                <a href="manual de motos.html" class="menu-card-button">Abrir <i class="fas fa-arrow-right"></i></a>
+            </div>
+            
+            <div class="menu-card coming-soon">
+                <div class="menu-card-header">
+                    <span><i class="fas fa-lightbulb"></i></span> Recomendaciones
+                </div>
+                <div class="menu-card-content">
+                    <p>Consejos expertos para el cuidado de tu moto, mejores prácticas de conducción y recomendaciones de productos verificados.</p>
+                </div>
+                <a href="#" class="menu-card-button">Próximamente</a>
+            </div>
+            
+            <div class="menu-card coming-soon">
+                <div class="menu-card-header">
+                    <span><i class="fas fa-search"></i></span> Diagnóstico de Fallas
+                </div>
+                <div class="menu-card-content">
+                    <p>Herramienta interactiva para ayudarte a diagnosticar problemas en tu moto basado en síntomas y códigos de error.</p>
+                </div>
+                <a href="#" class="menu-card-button">Próximamente</a>
+            </div>
+            
+            <div class="menu-card coming-soon">
+                <div class="menu-card-header">
+                    <span><i class="fas fa-clock"></i></span> Mantenimiento
+                </div>
+                <div class="menu-card-content">
+                    <p>Guías de mantenimiento preventivo con intervalos de servicio y procedimientos para cada modelo de motocicleta.</p>
+                </div>
+                <a href="mantenimiento.html" class="menu-card-button">Abrir <i class="fas fa-arrow-right"></i></a>
+            </div>
+            
+            <div class="menu-card coming-soon">
+                <div class="menu-card-header">
+                    <span><i class="fas fa-bolt"></i></span> Diagramas Eléctricos
+                </div>
+                <div class="menu-card-content">
+                    <p>Diagramas completos del sistema eléctrico para diferentes modelos, con ubicación de fusibles y componentes.</p>
+                </div>
+                <a href="#" class="menu-card-button">Próximamente</a>
+            </div>
+            
+            <div class="menu-card coming-soon">
+                <div class="menu-card-header">
+                    <span><i class="fas fa-wrench"></i></span> Tabla de Torque
+                </div>
+                <div class="menu-card-content">
+                    <p>Especificaciones de torque para todos los componentes críticos de diferentes modelos de motocicletas.</p>
+                </div>
+                <a href="#" class="menu-card-button">Próximamente</a>
+            </div>
+            
+            <div class="menu-card coming-soon">
+                <div class="menu-card-header">
+                    <span><i class="fas fa-oil-can"></i></span> Lubricantes y Fluidos
+                </div>
+                <div class="menu-card-content">
+                    <p>Guía de los fluidos recomendados para cada modelo, incluyendo aceites, refrigerantes y líquidos de frenos.</p>
+                </div>
+                <a href="#" class="menu-card-button">Próximamente</a>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2023 MotoManual Pro - Todos los derechos reservados</p>
+            <p><i class="fas fa-phone"></i> Soporte técnico: +1 234 567 890 | <i class="fas fa-envelope"></i> contacto@motomanualpro.com</p>
+        </footer>
+    </div>
+</body>
+</html>

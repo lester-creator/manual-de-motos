@@ -1,0 +1,3883 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MotoManual Pro 🏍️</title>
+    <style>
+        :root {
+            --color-primario: #e63946;
+            --color-secundario: #f1faee;
+            --color-accento: #3f6f8d;
+            --sombra: 0 10px 20px rgba(0, 0, 0, 0.1);
+            --degradado: linear-gradient(135deg, #e63946 0%, #457b9d 100%);
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: lch(0% 0 0);
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--sombra);
+            position: relative;
+        }
+        
+        .header {
+            background: var(--degradado);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            position: relative;
+            z-index: 2;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header::after {
+            content: "🏍️";
+            position: absolute;
+            font-size: 10rem;
+            opacity: 0.1;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+        } 
+
+        
+        
+        
+        .search-box {
+            display: flex;
+            gap: 15px;
+            padding: 25px;
+            background: var(--color-secundario);
+            border-bottom: 1px solid #eee;
+            flex-wrap: wrap;
+        }
+        
+        select, button, input {
+            padding: 15px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+            flex-grow: 1;
+            min-width: 200px;
+        }
+        
+        select {
+            background: white url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") no-repeat right 15px center;
+            background-size: 15px;
+            appearance: none;
+            box-shadow: 0 2px 5px rgba(7, 184, 81, 0.1);
+        }
+        
+        button {
+            background: var(--color-accento);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(74, 17, 165, 0.15);
+        }
+        
+        #favoritoBtn {
+            background: #b1d60d;
+            color: #000;
+        }
+        
+        .result-container {
+            padding: 30px;
+            min-height: 300px;
+        }
+        
+        .moto-card {
+            background: rgb(255, 255, 255);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--sombra);
+            margin-bottom: 30px;
+            transform: scale(0.98);
+            transition: transform 0.3s;
+            border-left: 5px solid var(--color-primario);
+        }
+        
+        .moto-card:hover {
+            transform: scale(1);
+        }
+        
+        .moto-header {
+            background: var(--color-secundario);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .moto-title {
+            margin: 0;
+            color: var(--color-primario);
+            font-size: 1.8rem;
+        }
+        
+        .moto-year {
+            background: var(--color-accento);
+            color: rgb(48, 226, 12);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .problema-list {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        
+        .problema-item {
+            padding: 20px;
+            border-bottom: 1px solid #27db0f;
+            transition: background 0.3s;
+        }
+        
+        .problema-item:hover {
+            background: #f9f9f9;
+        }
+        
+        .problema-titulo {
+            font-weight: bold;
+            color: var(--color-primario);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .problema-titulo::before {
+            content: "❗";
+        }
+        
+        .solucion {
+            background: var(--color-secundario);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            position: relative;
+            padding-left: 50px;
+            border-left: 3px solid var(--color-accento);
+        }
+        
+        .solucion::before {
+            content: "🛠️";
+            position: absolute;
+            left: 15px;
+            top: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .solucion-item {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .solucion-item::before {
+            content: "•";
+            position: absolute;
+            left: 5px;
+            color: var(--color-primario);
+        }
+        
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 50px;
+            text-align: center;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--color-primario);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+        }
+        
+        .empty-state img {
+            width: 150px;
+            opacity: 0.6;
+            margin-bottom: 20px;
+        }
+        
+        .favoritos-container {
+            padding: 0 25px;
+            margin-bottom: -15px;
+        }
+
+        /* Estilos para la búsqueda mejorada */
+        .no-results {
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            border-top: 1px solid #eee;
+        }
+
+        .search-highlight {
+            background-color: #ffeb3b;
+            font-weight: bold;
+            padding: 0 2px;
+            border-radius: 3px;
+        }
+
+        .search-status {
+            font-size: 0.9rem;
+            color: #457b9d;
+            margin-top: 10px;
+            text-align: right;
+            padding-right: 15px;
+        }
+
+        /* Ocultar el reproductor de audio */
+        #motoSound {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .search-box {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            select, button, input {
+                width: 100%;
+                min-width: auto;
+            }
+            
+            .moto-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>MotoManual Pro 🏍️</h1>
+        </div>
+        
+        <div class="search-box">
+            <select id="marcaSelect">
+                <option value="">Selecciona una marca</option>
+            </select>
+            
+            <select id="modeloSelect" disabled>
+                <option value="">Selecciona un modelo</option>
+            </select>
+            
+            <input type="text" id="searchInput" placeholder="Buscar problema específico...">
+            
+            <button id="buscarBtn">
+                <span>🔍</span> Buscar Soluciones
+            </button>
+            
+            <button id="favoritoBtn">
+                <span>⭐</span> Guardar en Favoritos
+            </button>
+        </div>
+        
+        <div class="favoritos-container">
+            <select id="favoritosSelect">
+                <option value="">-- Tus favoritos --</option>
+            </select>
+        </div>
+        
+        <div id="resultContainer" class="result-container">
+            <div class="empty-state">
+                <img src="https://cdn-icons-png.flaticon.com/512/2972/2972035.png" alt="Moto">
+                <h2>Selecciona una marca y modelo</h2>
+                <p>Encuentra soluciones a los problemas más comunes de tu moto</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reproductor de audio oculto -->
+    <audio id="motoSound" preload="auto"></audio>
+
+    <script>
+        // Base de datos de motos (versión resumida para el ejemplo)
+        const motos_db = {
+            "Honda": {
+    "CBR 650R": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Fugas en el sello de la horquilla Showa",
+            "Problemas con el embrague deslizante",
+            "Vibraciones a medio régimen",
+            "Fallas en el sistema de inyección",
+            "Desgaste de neumáticos traseros"
+        ],
+        "soluciones": [
+            ["Reemplazar sellos SKF 41mm específicos", "Usar aceite 10W para horquillas", "Limpiar tubos con alcohol isopropílico", "Ajustar precarga (8-10 líneas)", "Instalar protectores de polvo"],
+            ["Ajustar holgura del cable (10-15mm)", "Reemplazar discos si grosor <2.8mm", "Lubricar cojinete con grasa molibdeno", "Verificar resorte diafragma", "Sangrar sistema con DOT 4"],
+            ["Balancear ruedas con contrapesos", "Verificar torque de pernos del motor (40 Nm)", "Ajustar carburantes con manómetro", "Revisar amortiguador trasero", "Instalar agarres antivibración"],
+            ["Limpiar inyectores con equipo profesional", "Verificar presión de combustible (3.2 bar)", "Resetear adaptativos con HDS", "Revisar sensor TPS", "Actualizar firmware ECU"],
+            ["Mantener presión (36 psi frío)", "Rotar neumáticos cada 3,000 km", "Usar Pirelli Diablo Rosso IV", "Verificar alineación con láser", "Revisar suspensión"]
+        ]
+    },
+    "Africa Twin 1100": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Problemas con el sistema DCT",
+            "Fugas en el sistema de refrigeración",
+            "Desgaste de rodamientos de rueda",
+            "Fallas en el sistema de navegación",
+            "Ruidos en el carenado"
+        ],
+        "soluciones": [
+            ["Actualizar software DCT con HDS", "Verificar nivel de aceite DCT (JASO MA2)", "Resetear adaptativos", "Limpiar sensores de posición", "Reemplazar solenoides si es necesario"],
+            ["Reemplazar juntas del radiador", "Usar refrigerante Honda Type 2", "Verificar mangueras por grietas", "Presurizar sistema (1.5 bar)", "Limpiar aletas con cepillo suave"],
+            ["Repackear grasa cada 20,000 km (SKF)", "Verificar sellos contra polvo", "Apretar ejes a 120 Nm", "Reemplazar en pareja", "Usar grasa de litio"],
+            ["Actualizar mapas desde USB", "Resetear unidad", "Verificar antena GPS", "Reinstalar software", "Probar alimentación"],
+            ["Ajustar tornillos del carenado (6 Nm)", "Instalar arandelas de goma", "Verificar soportes", "Usar cinta antivibración", "Revisar ajuste de espejos"]
+        ]
+    },
+    "CB 500F": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Fugas en el sello del árbol de levas",
+            "Problemas con el sensor de posición del cigüeñal",
+            "Desgaste de la cadena",
+            "Fallas en el sistema eléctrico",
+            "Corrosión en componentes"
+        ],
+        "soluciones": [
+            ["Reemplazar sello (medida 30x42x7)", "Limpiar superficie con acetona", "Aplicar sellador líquido en borde", "Torquear tapa a 12 Nm en cruz", "Verificar respiradero"],
+            ["Verificar resistencia (190-250Ω a 20°C)", "Limpiar sensor con contacto limpia", "Ajustar gap (0.5-1.5mm al rotor)", "Revisar cableado por cortes", "Reemplazar si muestra códigos"],
+            ["Ajustar tensión cada 500 km (15-20mm)", "Lubricar con cera para cadenas", "Reemplazar kit completo (DID 520VX2)", "Verificar alineación", "Evitar limpiadores agresivos"],
+            ["Verificar conexiones a tierra", "Probar estator (50V AC a 5,000 rpm)", "Reemplazar regulador/rectificador", "Limpiar conectores", "Revisar fusibles"],
+            ["Pulir con abrasivo fino", "Aplicar protector anticorrosivo", "Reemplazar tornillos por acero inoxidable", "Lavar después de invierno", "Evitar salitre"]
+        ]
+    },
+    "CRF 300L": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Fugas en el sello de la horquilla",
+            "Problemas con el sistema de inyección",
+            "Desgaste de los neumáticos",
+            "Fallas en el sistema de frenos ABS",
+            "Sobrecalentamiento en off-road"
+        ],
+        "soluciones": [
+            ["Reemplazar sellos SKF 43mm", "Limpiar tubos con alcohol isopropílico", "Usar aceite 7.5W", "Ajustar precarga (15-20mm sag)", "Instalar protectores de polvo"],
+            ["Limpiar inyectores con aditivo", "Verificar presión de combustible (3.0 bar)", "Resetear ECU desconectando batería", "Revisar sensor TPS", "Actualizar firmware"],
+            ["Mantener presión (22 psi off-road)", "Usar Pirelli MT21 Rallycross", "Verificar alineación", "Revisar suspensión", "Rotar cada 2,000 km en terrenos difíciles"],
+            ["Actualizar software ABS", "Verificar sensores (800-1,200Ω)", "Sangrear sistema con DOT 4", "Limpiar anillos tonales", "Revisar módulo"],
+            ["Instalar ventilador adicional", "Usar refrigerante Engine Ice", "Verificar termostato", "Limpiar aletas del motor", "Ajustar mezcla aire/combustible"]
+        ]
+    },
+    "Gold Wing Tour": {
+        "año": "actualizados",
+        "problemas_comunes": [
+            "Problemas con el sistema de audio",
+            "Fugas en el sistema de aire acondicionado",
+            "Desgaste de rodamientos de rueda",
+            "Fallas en el computador de viaje",
+            "Error en el sistema de inyección"
+        ],
+        "soluciones": [
+            ["Actualizar firmware del amplificador", "Verificar conexión de 40 pines", "Reemplazar altavoces (4Ω 25W)", "Resetear sistema (POWER + MENU)", "Probar con fuente alternativa"],
+            ["Recargar R134a (14 oz)", "Reemplazar válvula de expansión", "Verificar sellos O-ring (PAG 46 oil)", "Limpiar condensador", "Probar compresor"],
+            ["Repackear grasa cada 20,000 km", "Usar rodamientos Timken", "Verificar sellos", "Apretar ejes a 140 lb-ft", "Reemplazar en pareja"],
+            ["Verificar sensor de velocidad", "Resetear unidad (desconectar batería)", "Actualizar software con HDS", "Limpiar conectores", "Reemplazar módulo si es necesario"],
+            ["Limpiar inyectores con ultrasonido", "Verificar presión de combustible (50 psi)", "Probar sensores MAP/IAT", "Resetear adaptativos", "Actualizar mapa ECU"]
+        ]
+    }
+},
+    "Kawasaki": {
+    "Ninja 400": {
+        "año": "actualizados",
+        "problemas_comunes": [
+            "Fugas en el sello de la horquilla",
+            "Problemas con el embrague asistido",
+            "Vibraciones a altas RPM",
+            "Fallas en el sensor de posición del acelerador",
+            "Desgaste prematuro de la cadena"
+        ],
+        "soluciones": [
+            ["Reemplazar sellos SKF 41mm (torque 15 Nm)", "Usar aceite 10W para horquillas", "Limpiar tubos con alcohol isopropílico", "Ajustar precarga (5-7 líneas visibles)", "Instalar protectores de polvo"],
+            ["Ajustar holgura del cable (10-15mm)", "Reemplazar discos si grosor <2.8mm", "Lubricar cojinete con grasa de molibdeno", "Verificar resorte diafragma (45 lb de presión)", "Sangrar sistema con DOT 4"],
+            ["Balancear ruedas con contrapesos dinámicos", "Verificar torque de pernos del motor (40 Nm)", "Ajustar carburantes con manómetro", "Revisar amortiguador trasero", "Instalar agarres antivibración"],
+            ["Calibrar TPS con scanner Kawasaki (0.6-4.8V rango)", "Verificar resistencia (4.8kΩ ±10%)", "Limpiar pista del potenciómetro con contacto limpia", "Revisar conexiones del arnés (pin #24)", "Reemplazar si muestra códigos P0120-P0123"],
+            ["Ajustar tensión cada 500 km (15-20mm de juego)", "Lubricar con cera para cadenas", "Reemplazar piñones y cadena juntos (DID 520VX2)", "Verificar alineación con láser", "Evitar limpiadores agresivos"]
+        ]
+    },
+    "Z900": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Sobrecalentamiento en tráfico",
+            "Fugas en el sistema de refrigeración",
+            "Problemas con el sistema de frenos ABS",
+            "Error en el cuadro de instrumentos",
+            "Ruidos en el escape"
+        ],
+        "soluciones": [
+            ["Instalar ventilador adicional", "Usar refrigerante Engine Ice", "Verificar termostato (apertura a 82°C)", "Limpiar aletas del radiador con aire comprimido", "Evitar rpm <2,000 en paradas prolongadas"],
+            ["Reemplazar juntas del radiador (torque 8 Nm)", "Verificar mangueras por grietas", "Presurizar sistema (1.2 bar máximo)", "Limpiar aletas con cepillo de latón", "Usar refrigerante Kawasaki Coolant"],
+            ["Actualizar software ABS con herramienta KDS", "Verificar sensores de rueda (800-1,200Ω)", "Sangrear sistema con presión", "Limpiar anillos tonales con alcohol", "Revisar módulo bajo asiento"],
+            ["Resetear unidad (desconectar batería 15 minutos)", "Verificar conexión de 16 pines", "Actualizar firmware", "Revisar fusible F5", "Reemplazar LCD si persiste falla"],
+            ["Apretar pernos de colector (25 Nm en estrella)", "Reemplazar juntas de escape (torque 18 Nm)", "Verificar soportes del silenciador", "Limpiar superficies con acetona", "Aplicar sellador de alta temperatura"]
+        ]
+    },
+    "Versys 650": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Desgaste de rodamientos de rueda",
+            "Problemas con el alternador",
+            "Fugas en el tanque de combustible",
+            "Fallas en el sistema de carga",
+            "Vibraciones en el manubrio"
+        ],
+        "soluciones": [
+            ["Repackear grasa cada 20,000 km (SKF 6004-2RS)", "Verificar sellos contra polvo", "Apretar ejes a 110 Nm", "Reemplazar en pareja", "Usar grasa de litio"],
+            ["Probar voltaje de carga (13.8-14.4V a 3,000 rpm)", "Reemplazar regulador/rectificador si >15V", "Limpiar conmutador con lija 800 grit", "Verificar conexiones de tierra", "Reemplazar escobillas si <5mm"],
+            ["Soldar por puntos con varilla de aluminio", "Reemplazar juntas del tapón", "Verificar válvula de sobrepresión", "Limpiar área con acetona", "Aplicar sellador Fuel Resistant"],
+            ["Verificar estator (50V AC a 5,000 rpm)", "Limpiar conectores con contacto limpia", "Probar resistencia del rotor", "Revisar fusibles", "Reemplazar batería si antigua"],
+            ["Balancear ruedas con contrapesos", "Ajustar cojinetes de dirección (torque 35 Nm)", "Verificar triple clamp", "Instalar agarres antivibración", "Revisar llantas por deformaciones"]
+        ]
+    },
+    "KLR 650": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Consumo excesivo de aceite",
+            "Problemas con el doblador de válvulas",
+            "Fugas en el sello del árbol de levas",
+            "Sobrecalentamiento en terrenos difíciles",
+            "Corrosión en el sistema eléctrico"
+        ],
+        "soluciones": [
+            ["Reemplazar segmentos (consumo máximo 1L/1,000 km)", "Usar aceite 20W50 mineral", "Verificar guías de válvulas", "Inspeccionar retenes", "Cambiar respiradero del cárter"],
+            ["Ajustar válvulas cada 10,000 km (0.15-0.20mm)", "Reemplazar resortes si están débiles", "Limpiar cabezote con ultrasonido", "Verificar árbol de levas por desgaste", "Usar aceite JASO MA2"],
+            ["Reemplazar sello (medida 30x42x7)", "Limpiar superficie con acetona", "Aplicar sellador líquido en borde externo", "Torquear tapa a 12 Nm en cruz", "Verificar respiradero"],
+            ["Instalar kit de ventilador adicional", "Usar refrigerante Engine Ice", "Verificar termostato (apertura a 82°C)", "Limpiar aletas del motor", "Ajustar mezcla aire/combustible"],
+            ["Aplicar grasa dieléctrica en conectores", "Reemplazar terminales oxidados", "Usar cinta líquida en empalmes", "Instalar protectores de cableado", "Lavar con agua destilada después de lluvia"]
+        ]
+    },
+    "H2 SX SE": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Problemas con el turbo",
+            "Fallas en el sistema de frenos cornering ABS",
+            "Fugas en el intercooler",
+            "Error en el sensor de oxígeno",
+            "Sobrecalentamiento del embrague"
+        ],
+        "soluciones": [
+            ["Verificar presión de aceite en alimentación (mín 30 psi)", "Ajustar wastegate a 8-10 psi", "Limpiar válvula de alivio con carb cleaner", "Revisar mangueras por fugas", "Actualizar mapa ECU para turbo"],
+            ["Actualizar software ABS con KDS", "Verificar sensores IMU (reiniciar con scanner)", "Sangrear sistema con DOT 4", "Lijar discos con papel 180 grit", "Usar pastillas sinterizadas HH"],
+            ["Reemplazar juntas del intercooler (torque 10 Nm)", "Presurizar sistema con 5 psi para detectar fugas", "Limpiar aletas con espuma", "Verificar conexiones", "Aplicar sellador de juntas"],
+            ["Limpiar sensor con contacto limpia", "Verificar conexiones (cable negro a tierra)", "Probar resistencia (10-20Ω a 20°C)", "Reemplazar si muestra códigos P0130-P0134", "Actualizar firmware ECU"],
+            ["Reemplazar discos si están azulados", "Usar aceite JASO MA2 específico", "Verificar resorte diafragma", "Sangrar sistema hidráulico", "Instalar kit de refrigeración adicional"]
+        ]
+    }
+},
+    "Ducati": {
+        "Monster 1200 (Naked)": {
+            "año": "actualizado",
+            "problemas_comunes": [
+                "Recalentamiento en ciudad",
+                "Problemas con la batería"
+            ],
+            "soluciones": [
+                [
+                    "Instalar kit ventilador adicional",
+                    "Evitar rpm bajas prolongadas"
+                ],
+                [
+                    "Usar batería Yuasa YTZ14S",
+                    "Verificar carga del alternador"
+                ]
+            ]
+        }
+    },
+       "Bajaj": {
+    "Pulsar NS 200": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Fugas de aceite en el cárter",
+            "Sensor de velocidad intermitente",
+            "Vibraciones a altas RPM",
+            "Problemas de arranque",
+            "Desgaste de la cadena"
+        ],
+        "soluciones": [
+            ["Reemplazar junta del cárter (torque 24 Nm)", "Limpiar superficies con acetona", "Usar sellador líquido en esquinas", "Verificar tapón de drenaje", "Inspeccionar retenes"],
+            ["Limpiar sensor con contacto limpia", "Verificar cableado (resistencia 1kΩ)", "Ajustar gap (0.5-1.5mm al rotor)", "Reemplazar si muestra fallas", "Probar con multímetro"],
+            ["Balancear ruedas con contrapesos", "Verificar cojinetes de dirección", "Ajustar torque del motor (30 Nm)", "Instalar agarres antivibración", "Revisar llantas"],
+            ["Verificar batería (>12.6V)", "Limpiar bornes y conexiones", "Revisar relé de arranque", "Probar motor de arranque", "Cambiar bujía (NGK CR7EIA)"],
+            ["Ajustar tensión cada 500 km (20-25mm)", "Lubricar con cera para cadenas", "Reemplazar kit completo (Rolon 520RO)", "Verificar alineación", "Evitar agua a presión"]
+        ]
+    },
+    "Dominar 400": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Sobrecalentamiento en ciudad",
+            "Desgaste rápido de pastillas de freno",
+            "Fugas en el sistema de refrigeración",
+            "Problemas con el embrague asistido",
+            "Fallas en el sistema de navegación"
+        ],
+        "soluciones": [
+            ["Instalar ventilador adicional", "Usar refrigerante Motul Inugel", "Verificar termostato (apertura a 82°C)", "Limpiar radiador con aire", "Evitar rpm <2,000 en paradas"],
+            ["Usar pastillas sinterizadas HH", "Lijar discos con papel 180 grit", "Verificar pistones de caliper", "Sangrear sistema con DOT 4", "Limpiar guías con grasa de cobre"],
+            ["Reemplazar juntas del radiador", "Verificar mangueras (presión 1.2 bar)", "Limpiar aletas con cepillo", "Usar refrigerante recomendado", "Inspeccionar bomba de agua"],
+            ["Ajustar holgura del cable (2-3mm)", "Reemplazar discos si grosor <3.0mm", "Lubricar cojinete con grasa molibdeno", "Verificar resorte diafragma", "Sangrar sistema"],
+            ["Actualizar firmware", "Verificar conexión GPS", "Resetear unidad (botón POWER + MENU)", "Reinstalar mapas", "Probar con fuente alternativa"]
+        ]
+    },
+    "Pulsar RS 200": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Problemas con el sistema de inyección",
+            "Fugas en el sello de la horquilla invertida",
+            "Desgaste de neumáticos traseros",
+            "Fallas en el sistema ABS",
+            "Vibraciones en el carenado"
+        ],
+        "soluciones": [
+            ["Limpiar inyectores con ultrasonido", "Verificar presión de combustible (3.0 bar)", "Resetear adaptativos con scanner", "Revisar sensor TPS", "Actualizar firmware ECU"],
+            ["Reemplazar sellos SKF 37mm", "Limpiar tubos con alcohol isopropílico", "Usar aceite 7.5W", "Ajustar precarga (15mm sag)", "Instalar protectores de polvo"],
+            ["Mantener presión (28 psi frío)", "Rotar neumáticos cada 3,000 km", "Usar MRF Revz-C", "Verificar alineación", "Revisar suspensión"],
+            ["Actualizar software ABS", "Verificar sensores (800-1,200Ω)", "Sangrear sistema con herramienta", "Limpiar anillos tonales", "Revisar módulo"],
+            ["Ajustar tornillos del carenado (5 Nm)", "Instalar arandelas de goma", "Verificar soportes", "Usar cinta antivibración", "Revisar ajuste de espejos"]
+        ]
+    },
+    "Avenger 220": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Fugas en el carburador",
+            "Problemas con el arranque en frío",
+            "Desgaste de los rodamientos de rueda",
+            "Fallas en el sistema eléctrico",
+            "Corrosión en el escape"
+        ],
+        "soluciones": [
+            ["Reemplazar juntas del carburador", "Ajustar tornillos a 1.5 Nm", "Limpiar circuito de ralentí", "Verificar nivel de flotador (12mm)", "Sincronizar con manómetro"],
+            ["Limpiar bujía (NGK CR7HSA)", "Verificar batería (>12.4V)", "Ajustar mezcla aire/combustible (1.75 vueltas)", "Usar gasolina sin etanol", "Precalentar con acelerador"],
+            ["Repackear grasa cada 15,000 km", "Usar rodamientos SKF", "Verificar sellos contra polvo", "Apretar ejes a 90 Nm", "Reemplazar en pareja"],
+            ["Verificar conexiones a tierra", "Probar estator (35V AC a 5,000 rpm)", "Reemplazar regulador/rectificador", "Limpiar conectores", "Revisar fusibles"],
+            ["Pulir con abrasivo para acero inoxidable", "Aplicar protector térmico", "Reemplazar juntas de colector", "Limpiar con WD-40 Specialist", "Evitar salitre"]
+        ]
+    },
+    "CT 100": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Consumo excesivo de aceite",
+            "Problemas con el sensor de velocidad",
+            "Fugas en el sistema de escape",
+            "Fallas en las luces",
+            "Marcha mínima inestable"
+        ],
+        "soluciones": [
+            ["Verificar segmentos", "Usar aceite 20W50 mineral", "Revisar guías de válvulas", "Inspeccionar retenes", "Cambiar respiradero"],
+            ["Limpiar sensor con contacto limpia", "Verificar cableado", "Ajustar gap (0.5-1.5mm)", "Reemplazar si daña", "Probar con multímetro"],
+            ["Reemplazar juntas de colector", "Aplicar sellador de alta temperatura", "Verificar soportes", "Limpiar superficies", "Instalar anillos nuevos"],
+            ["Verificar conexiones", "Reemplazar bombillas", "Probar fusibles", "Revisar interruptores", "Asegurar tierra"],
+            ["Ajustar mezcla aire/combustible", "Limpiar cuerpo de aceleración", "Verificar válvula IAC", "Resetear ECU", "Cambiar bujía"]
+        ]
+    }
+},
+            "Yamaha": {
+    "MT-07": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Fugas en el sello de la horquilla",
+            "Problemas con el embrague",
+            "Vibraciones a medio régimen",
+            "Fallas en el sistema de inyección",
+            "Desgaste de neumáticos traseros"
+        ],
+        "soluciones": [
+            ["Reemplazar sellos SKF 41mm", "Usar aceite 10W para horquillas", "Limpiar tubos con alcohol isopropílico", "Ajustar precarga (8-10 líneas)", "Instalar protectores de polvo"],
+            ["Ajustar holgura del cable (10-15mm)", "Reemplazar discos si grosor <2.8mm", "Lubricar cojinete con grasa molibdeno", "Verificar resorte diafragma", "Sangrear sistema con DOT 4"],
+            ["Balancear ruedas con contrapesos", "Verificar torque de pernos del motor (42 Nm)", "Ajustar carburantes con manómetro", "Revisar amortiguador trasero", "Instalar agarres antivibración"],
+            ["Limpiar inyectores con equipo profesional", "Verificar presión de combustible (3.2 bar)", "Resetear adaptativos con Yamaha Diagnostic Tool", "Revisar sensor TPS", "Actualizar firmware ECU"],
+            ["Mantener presión (36 psi frío)", "Rotar neumáticos cada 3,000 km", "Usar Michelin Road 5", "Verificar alineación con láser", "Revisar suspensión"]
+        ]
+    },
+    "YZF-R1": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Problemas con el sistema de frenos cornering ABS",
+            "Fugas en el sistema de refrigeración",
+            "Desgaste de rodamientos de rueda",
+            "Fallas en el sistema de navegación",
+            "Sobrecalentamiento en tráfico"
+        ],
+        "soluciones": [
+            ["Actualizar software ABS con Yamaha Diagnostic Tool", "Verificar sensores IMU (reiniciar con scanner)", "Sangrear sistema con DOT 4", "Lijar discos con papel 180 grit", "Usar pastillas sinterizadas HH"],
+            ["Reemplazar juntas del radiador", "Usar refrigerante Yamaha Coolant", "Verificar mangueras por grietas", "Presurizar sistema (1.5 bar)", "Limpiar aletas con cepillo suave"],
+            ["Repackear grasa cada 15,000 km (SKF)", "Verificar sellos contra polvo", "Apretar ejes a 120 Nm", "Reemplazar en pareja", "Usar grasa de litio"],
+            ["Actualizar mapas desde USB", "Resetear unidad", "Verificar antena GPS", "Reinstalar software", "Probar alimentación"],
+            ["Instalar ventilador adicional", "Usar refrigerante Engine Ice", "Verificar termostato (apertura a 88°C)", "Limpiar aletas del motor", "Ajustar mezcla aire/combustible"]
+        ]
+    },
+    "Tenere 700": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Fugas en el sello de la horquilla",
+            "Problemas con el sistema de inyección",
+            "Desgaste de los neumáticos",
+            "Fallas en el sistema de frenos ABS",
+            "Ruidos en el carenado"
+        ],
+        "soluciones": [
+            ["Reemplazar sellos SKF 43mm", "Limpiar tubos con alcohol isopropílico", "Usar aceite 7.5W", "Ajustar precarga (15-20mm sag)", "Instalar protectores de polvo"],
+            ["Limpiar inyectores con aditivo", "Verificar presión de combustible (3.0 bar)", "Resetear ECU desconectando batería", "Revisar sensor TPS", "Actualizar firmware"],
+            ["Mantener presión (28 psi off-road)", "Usar Pirelli Scorpion Rally STR", "Verificar alineación", "Revisar suspensión", "Rotar cada 2,000 km en terrenos difíciles"],
+            ["Actualizar software ABS", "Verificar sensores (800-1,200Ω)", "Sangrear sistema con DOT 4", "Limpiar anillos tonales", "Revisar módulo"],
+            ["Ajustar tornillos del carenado (6 Nm)", "Instalar arandelas de goma", "Verificar soportes", "Usar cinta antivibración", "Revisar ajuste de espejos"]
+        ]
+    },
+    "XMAX 300": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Problemas con el variador",
+            "Fugas en el sistema de refrigeración",
+            "Desgaste de la correa",
+            "Fallas en el sistema de frenos",
+            "Corrosión en el chasis"
+        ],
+        "soluciones": [
+            ["Limpiar rodillos con alcohol", "Reemplazar rodillos si diámetro <19mm", "Verificar polea móvil por desgaste", "Lubricar guías con grasa de silicona", "Ajustar tensión de la correa"],
+            ["Reemplazar juntas del radiador", "Usar refrigerante Yamaha Coolant", "Verificar mangueras por grietas", "Presurizar sistema (1.0 bar)", "Limpiar aletas con cepillo suave"],
+            ["Reemplazar cada 10,000 km (Gates Powerlink)", "Verificar alineación de poleas", "Inspeccionar tensor automático", "Evitar aceleraciones bruscas", "No usar lubricantes en la correa"],
+            ["Sangrear sistema con DOT 3", "Reemplazar pastillas orgánicas Yamaha OE", "Lijar discos con papel 150 grit", "Verificar latiguillos por hinchazón", "Ajustar palanca a 10-15mm de juego"],
+            ["Pulir con abrasivo fino", "Aplicar protector anticorrosivo", "Revisar puntos de soldadura", "Lavar después de invierno", "Evitar salitre"]
+        ]
+    },
+    "WR250F": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Fugas en el sello del árbol de levas",
+            "Problemas con el sensor de posición del cigüeñal",
+            "Desgaste de la cadena",
+            "Fallas en el sistema eléctrico",
+            "Sobrecalentamiento en off-road"
+        ],
+        "soluciones": [
+            ["Reemplazar sello (medida 30x42x7)", "Limpiar superficie con acetona", "Aplicar sellador líquido en borde", "Torquear tapa a 12 Nm en cruz", "Verificar respiradero"],
+            ["Verificar resistencia (190-250Ω a 20°C)", "Limpiar sensor con contacto limpia", "Ajustar gap (0.5-1.5mm al rotor)", "Revisar cableado por cortes", "Reemplazar si muestra códigos"],
+            ["Ajustar tensión cada 500 km (15-20mm)", "Lubricar con cera para cadenas", "Reemplazar kit completo (DID 520VX2)", "Verificar alineación", "Evitar limpiadores agresivos"],
+            ["Verificar conexiones a tierra", "Probar estator (50V AC a 5,000 rpm)", "Reemplazar regulador/rectificador", "Limpiar conectores", "Revisar fusibles"],
+            ["Instalar ventilador adicional", "Usar refrigerante Engine Ice", "Verificar termostato (apertura a 82°C)", "Limpiar aletas del motor", "Ajustar mezcla aire/combustible"]
+        ]
+    }
+},
+            "TVS": {
+    "Apache RTR 160": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Fugas en el tanque de combustible",
+            "Problemas con el carburador en frío",
+            "Desgaste rápido de la cadena",
+            "Vibraciones a altas RPM",
+            "Fallas en el sistema de arranque"
+        ],
+        "soluciones": [
+            ["Revisar sellos y conexiones (torque 10 Nm)", "Reemplazar mangueras si están agrietadas", "Usar sellador para plásticos", "Verificar válvula de ventilación", "Limpiar área con alcohol isopropílico"],
+            ["Ajustar mezcla aire/combustible (2.5 vueltas)", "Limpiar circuito de ralentí con spray", "Verificar flotador (nivel 14mm)", "Reemplazar aguja si está gastada", "Precalentar con 3-4 golpes de acelerador"],
+            ["Ajustar tensión cada 500 km (15-20mm)", "Lubricar con cera para cadenas", "Reemplazar piñones y cadena juntos (Rolon 428H)", "Verificar alineación con regla", "Evitar limpiadores a presión"],
+            ["Balancear ruedas con contrapesos adhesivos", "Verificar cojinetes de dirección (torque 22 Nm)", "Ajustar torque del motor (25 Nm)", "Instalar agarres antivibración", "Revisar llantas por deformaciones"],
+            ["Verificar batería (>12.6V en reposo)", "Limpiar conexiones del solenoide", "Revisar engranaje de arranque", "Probar relé", "Reemplazar motor de arranque si necesario"]
+        ]
+    },
+    "Apache RR 310": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Sobrecalentamiento en ciudad",
+            "Problemas con el sistema de inyección",
+            "Fugas en el sello de la horquilla invertida",
+            "Desgaste de pastillas de freno delanteras",
+            "Fallas en el sensor de velocidad"
+        ],
+        "soluciones": [
+            ["Instalar ventilador adicional", "Usar refrigerante Motul Inugel Optimal", "Verificar termostato (apertura a 82°C)", "Limpiar radiador con aire comprimido", "Evitar rpm <2,500 en paradas"],
+            ["Limpiar inyectores con equipo ultrasonido", "Verificar presión de combustible (3.0 bar)", "Resetear adaptativos con scanner", "Actualizar firmware ECU", "Reemplazar filtro de combustible"],
+            ["Reemplazar sellos SKF 43mm específicos", "Usar aceite 7.5W para horquillas", "Limpiar tubos con alcohol isopropílico", "Ajustar precarga (15-20mm sag)", "Instalar protectores de polvo"],
+            ["Reemplazar pastillas sinterizadas HH", "Lijar discos con papel 180 grit", "Verificar pistones de caliper", "Sangrear sistema con DOT 4", "Limpiar guías con grasa de cobre"],
+            ["Limpiar sensor con contacto limpia", "Verificar cableado (resistencia 800-1,200Ω)", "Ajustar gap (0.5-1.5mm al rotor)", "Reemplazar si muestra códigos de falla", "Probar con multímetro"]
+        ]
+    },
+    "NTORQ 125": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Problemas con el variador",
+            "Fugas en el sistema de refrigeración",
+            "Desgaste de la correa",
+            "Fallas en el sistema de frenos",
+            "Ruidos en el carenado"
+        ],
+        "soluciones": [
+            ["Limpiar rodillos con alcohol", "Reemplazar rodillos si diámetro <19mm", "Verificar polea móvil por desgaste", "Lubricar guías con grasa de silicona", "Ajustar tensión de la correa"],
+            ["Reemplazar juntas del radiador", "Usar refrigerante TVS Green Coolant", "Verificar mangueras por grietas", "Presurizar sistema (1.0 bar)", "Limpiar aletas con cepillo suave"],
+            ["Reemplazar cada 10,000 km (Gates Powerlink)", "Verificar alineación de poleas", "Inspeccionar tensor automático", "Evitar aceleraciones bruscas", "No usar lubricantes en la correa"],
+            ["Sangrear sistema con DOT 3", "Reemplazar pastillas orgánicas TVS OE", "Lijar discos con papel 150 grit", "Verificar latiguillos por hinchazón", "Ajustar palanca a 10-15mm de juego"],
+            ["Ajustar tornillos del carenado (4 Nm)", "Instalar arandelas de goma", "Verificar soportes del faro", "Usar cinta antivibración 3M", "Revisar ajuste de los espejos"]
+        ]
+    },
+    "Jupiter 125": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Fugas en el carburador",
+            "Problemas con el arranque en frío",
+            "Desgaste de los rodamientos de rueda",
+            "Fallas en el sistema eléctrico",
+            "Corrosión en el chasis"
+        ],
+        "soluciones": [
+            ["Reemplazar juntas del carburador (kit TVS)", "Ajustar tornillos a 1.5 Nm", "Limpiar circuito de ralentí con spray", "Verificar nivel de flotador (14mm)", "Sincronizar con manómetro de vacío"],
+            ["Limpiar bujía (NGK CR6HSA)", "Verificar batería (>12.4V)", "Ajustar mezcla aire/combustible (1.5 vueltas)", "Usar gasolina sin etanol", "Precalentar con acelerador"],
+            ["Repackear grasa cada 15,000 km (SKF 6000-2RS)", "Verificar sellos contra polvo", "Apretar ejes a 80 Nm", "Reemplazar en pareja", "Usar grasa de litio"],
+            ["Verificar conexiones a tierra", "Probar estator (30V AC a 5,000 rpm)", "Reemplazar regulador/rectificador si voltaje >15V", "Limpiar conectores", "Revisar fusibles"],
+            ["Pulir con abrasivo fino (3M Scotch-Brite)", "Aplicar protector anticorrosivo (WD-40 Specialist)", "Revisar puntos de soldadura", "Lavar después de invierno", "Evitar salitre"]
+        ]
+    },
+    "Raider 125": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Problemas con el sistema de inyección",
+            "Fugas en el sello de la horquilla",
+            "Desgaste de neumáticos traseros",
+            "Fallas en el sistema de frenos CBS",
+            "Vibraciones a media velocidad"
+        ],
+        "soluciones": [
+            ["Limpiar inyectores con aditivo", "Verificar presión de combustible (2.8 bar)", "Resetear ECU desconectando batería 15 minutos", "Revisar sensor TPS", "Actualizar firmware"],
+            ["Reemplazar sellos SKF 30mm", "Limpiar tubos con alcohol isopropílico", "Usar aceite 10W", "Ajustar precarga (10-15mm sag)", "Instalar protectores de polvo"],
+            ["Mantener presión (25 psi frío)", "Rotar neumáticos cada 3,000 km", "Usar TVS Remora OE", "Verificar alineación", "Revisar suspensión trasera"],
+            ["Sangrear sistema con DOT 3", "Reemplazar pastillas orgánicas", "Lijar discos con papel 120 grit", "Verificar latiguillos", "Ajustar palanca a 10mm de juego"],
+            ["Balancear ruedas con contrapesos", "Verificar cojinetes de dirección", "Ajustar torque de horquilla", "Revisar llantas por deformaciones", "Instalar agarres antivibración"]
+        ]
+    }
+},
+    "Aprilia": {
+        "RSV4 (Deportiva)": {
+            "año": "actualizado",
+            "problemas_comunes": [
+                "Sobrecalentamiento del motor V4",
+                "Fugas en el sistema de refrigeración",
+                "Problemas con el embrague deslizante",
+                "Error en el sistema de inyección"
+            ],
+            "soluciones": [
+                [
+                    "Actualizar mapa ECU a versión 2.1.3",
+                    "Verificar funcionamiento del ventilador"
+                ],
+                [
+                    "Reemplazar juntas del radiador (torque 10 Nm)",
+                    "Inspeccionar mangueras cada 5,000 km"
+                ],
+                [
+                    "Ajustar holgura del cable a 5-7mm",
+                    "Reemplazar discos si el grosor < 3.2mm"
+                ],
+                [
+                    "Limpiar inyectores con ultrasonido",
+                    "Verificar sensor TPS (rango 0.6-4.8V)"
+                ]
+            ]
+        }
+    },
+    "Harley-Davidson": {
+        "Street Glide Special": {
+            "año": "actualizado",
+            "problemas_comunes": [
+                "Vibraciones excesivas en el manubrio",
+                "Fugas de aceite en el motor Milwaukee-Eight",
+                "Problemas con el sistema Boom! Box Infotainment",
+                "Desgaste prematuro de neumáticos traseros",
+                "Sobrecalentamiento en tráfico pesado"
+            ],
+            "soluciones": [
+                [
+                    "Balancear ruedas con contrapesos dinámicos",
+                    "Revisar cojinetes de dirección (torque 18-20 lb-ft)",
+                    "Instalar agarres antivibración",
+                    "Verificar alineación de horquilla",
+                    "Reemplazar bujes de motor si presentan holgura"
+                ],
+                [
+                    "Reemplazar junta de tapa de cilindros (torque 10-12 lb-ft en cruz)",
+                    "Verificar sellos del árbol de levas",
+                    "Usar aceite sintético 20W50",
+                    "Limpiar respiradero de cárter",
+                    "Inspeccionar tapones de inspección cada 5,000 km"
+                ],
+                [
+                    "Actualizar firmware a última versión",
+                    "Reiniciar sistema manteniendo botón HOME por 10 segundos",
+                    "Verificar conexiones del arnés principal",
+                    "Probar con altavoces alternativos",
+                    "Revisar fusible F37 en caja de fusibles"
+                ],
+                [
+                    "Ajustar presión a 36 psi (frío)",
+                    "Verificar alineación del basculante",
+                    "Rotar neumáticos cada 3,000 km",
+                    "Usar compuesto más duro (ej. Dunlop Elite 4)",
+                    "Revisar amortiguador trasero (ajustar precarga)"
+                ],
+                [
+                    "Instalar kit de ventilador adicional",
+                    "Usar refrigerante Engine Ice",
+                    "Verificar termostato (debe abrir a 180°F)",
+                    "Limpiar aletas del motor con cepillo de latón",
+                    "Evitar rpm inferiores a 2,000 en paradas prolongadas"
+                ]
+            ]
+        },
+        "Iron 883": {
+            "año": "actualizado",
+            "problemas_comunes": [
+                "Arranque difícil en frío",
+                "Fugas en el carburador CV40",
+                "Corrosión en componentes cromados",
+                "Falla en el sensor de posición del acelerador",
+                "Ruidos en la cadena primaria"
+            ],
+            "soluciones": [
+                [
+                    "Instalar bujías Iridium NGK DCPR7EIX",
+                    "Verificar batería (debe tener >12.6V en reposo)",
+                    "Ajustar mezcla aire/combustible (2.5 vueltas)",
+                    "Usar gasolina premium sin etanol",
+                    "Precalentar con 3-4 golpes de acelerador"
+                ],
+                [
+                    "Reemplazar juntas del carburador (kit #27041-09A)",
+                    "Ajustar tornillos de fijación a 1.7 Nm",
+                    "Limpiar válvula de enriquecedor con spray carb cleaner",
+                    "Verificar flotador (nivel debe ser 13-15mm)",
+                    "Sincronizar carburadores con manómetro"
+                ],
+                [
+                    "Aplicar WD-40 Specialist Corrosion Inhibitor",
+                    "Pulir con compuesto Mothers Mag & Aluminum Polish",
+                    "Reemplazar tornillos por acero inoxidable",
+                    "Lavar con jabón neutro y secar inmediatamente",
+                    "Evitar exposición prolongada a salitre"
+                ],
+                [
+                    "Calibrar TPS con scanner HD Digital Tech",
+                    "Rango correcto: 0.58-0.62V en ralentí",
+                    "Verificar conexiones en el arnés (pin #32)",
+                    "Limpiar pista del potenciómetro con contacto limpia",
+                    "Reemplazar si lectura supera 4.8V a WOT"
+                ],
+                [
+                    "Ajustar tensión (3/8-1/2 pulgada de juego)",
+                    "Lubricar con Chain-Saw Heavy Duty Lube",
+                    "Revisar alineación con láser alignment tool",
+                    "Reemplazar si hay eslabones dañados",
+                    "Verificar estado del piñón de ataque"
+                ]
+            ]
+        },
+        "Road King Special": {
+            "año": "actualizado",
+            "problemas_comunes": [
+                "Fallas en el sistema de frenos ABS",
+                "Desgaste irregular en las pastillas delanteras",
+                "Problemas con el control crucero",
+                "Fugas en el tanque de combustible",
+                "Vibraciones en el piso"
+            ],
+            "soluciones": [
+                [
+                    "Bleedear sistema con scanner ABS específico",
+                    "Verificar sensores de rueda (resistencia 800-1,200Ω)",
+                    "Limpiar anillos tonales con alcohol isopropílico",
+                    "Revisar módulo ABS bajo asiento",
+                    "Actualizar software del módulo"
+                ],
+                [
+                    "Lijar discos con papel 120-150 grit",
+                    "Verificar calipers (los pistones deben moverse libremente)",
+                    "Usar pastillas sinterizadas HH",
+                    "Alinear pinzas con galga de paralelismo",
+                    "Revisar estado de las horquillas"
+                ],
+                [
+                    "Verificar interruptor en manija derecha",
+                    "Probar servo motor (debe mantener 2,000 rpm estables)",
+                    "Inspeccionar cableado del módulo de control",
+                    "Resetear sistema desconectando batería 15 minutos",
+                    "Calibrar con scanner HD Digital Tech"
+                ],
+                [
+                    "Soldar por puntos con varilla de aluminio 4043",
+                    "Reemplazar juntas del tapón de llenado",
+                    "Verificar válvula de sobrepresión",
+                    "Limpiar área de sellos con acetona",
+                    "Aplicar sellador Permatex Fuel Resistant"
+                ],
+                [
+                    "Ajustar tornillos de motor (torque 18-22 lb-ft)",
+                    "Instalar kit antivibración de goma",
+                    "Verificar soportes del carenado",
+                    "Balancear llantas con contrapesos centrados",
+                    "Revisar amortiguadores (cambiar si fugan aceite)"
+                ]
+            ]
+        },
+        "Softail Standard": {
+            "año": "actualizado",
+            "problemas_comunes": [
+                "Fugas en el amortiguador trasero",
+                "Problemas con el indicador de combustible",
+                "Ruidos en el embrague",
+                "Calentamiento excesivo del motor",
+                "Corrosión en el sistema de escape"
+            ],
+            "soluciones": [
+                [
+                    "Reemplazar retenes del amortiguador (kit #51600258)",
+                    "Verificar presión de nitrógeno (150 psi)",
+                    "Limpiar válvula de compresión con aire comprimido",
+                    "Usar aceite hidráulico 15W",
+                    "Inspeccionar soldaduras del soporte"
+                ],
+                [
+                    "Limpiar sensor con alcohol isopropílico",
+                    "Verificar resistencia del flotador (10-80Ω)",
+                    "Revisar conexiones en el tablero",
+                    "Resetear sistema de instrumentos",
+                    "Reemplazar bomba de combustible completa"
+                ],
+                [
+                    "Ajustar holgura del cable (1/8 pulgada)",
+                    "Reemplazar placas si grosor < 2.8mm",
+                    "Lubricar cojinete de empuje con grasa Molykote",
+                    "Verificar resorte diafragma (debe tener 45 lb de presión)",
+                    "Sangrar sistema hidráulico con DOT 4"
+                ],
+                [
+                    "Instalar kit de ventilación adicional",
+                    "Usar aceite sintético 20W50 V-Twin",
+                    "Verificar avance de encendido (debe ser 28° a 2,700 rpm)",
+                    "Limpiar aletas del cilindro con cepillo de latón",
+                    "Revisar mezcla aire/combustible (Lambda 0.98-1.02)"
+                ],
+                [
+                    "Pulir con abrasivo Scotch-Brite marrón",
+                    "Aplicar recubrimiento cerámico Tech Line 400°F",
+                    "Reemplazar juntas de colector (torque 18 lb-ft)",
+                    "Instalar protectores térmicos en zonas críticas",
+                    "Lavar después de circular por zonas costeras"
+                ]
+            ]
+        },
+        "Electra Glide Ultra Classic": {
+            "año": "actualizado",
+            "problemas_comunes": [
+                "Fallas en el sistema de audio",
+                "Fugas en el sistema de aire acondicionado",
+                "Problemas con el computador de viaje",
+                "Desgaste prematuro de rodamientos de rueda",
+                "Error en el sistema de inyección"
+            ],
+            "soluciones": [
+                [
+                    "Actualizar firmware del amplificador",
+                    "Verificar conexiones en el conector de 40 pines",
+                    "Reemplazar altavoces delanteros (4Ω 25W)",
+                    "Resetear sistema manteniendo POWER + MENU",
+                    "Probar con fuente de audio alternativa"
+                ],
+                [
+                    "Realizar prueba de presión con nitrógeno",
+                    "Reemplazar válvula de expansión (kit #67910-08)",
+                    "Verificar sellos O-ring en compresor (PAG 46 oil)",
+                    "Limpiar condensador con espuma fina",
+                    "Recargar con 14 oz de R134a"
+                ],
+                [
+                    "Verificar sensor de velocidad en rueda trasera",
+                    "Resetear unidad desconectando batería 30 minutos",
+                    "Actualizar software con scanner HD Digital Tech",
+                    "Limpiar conectores del tablero",
+                    "Reemplazar módulo si muestra códigos U1016"
+                ],
+                [
+                    "Apretar eje a 140 lb-ft con torque wrench",
+                    "Repackear grasa cada 15,000 km",
+                    "Usar rodamientos Timken SET17",
+                    "Verificar sellos contra polvo",
+                    "Reemplazar en pareja aunque solo uno falle"
+                ],
+                [
+                    "Limpiar inyectores con equipo ultrasonido",
+                    "Verificar presión de combustible (55-62 psi)",
+                    "Probar sensores MAP y IAT con multímetro",
+                    "Resetear adaptativos con scanner",
+                    "Actualizar mapa ECU a última versión"
+                ]
+            ]
+        }
+    },
+    "Suzuki": {
+        "GSX-R750": {
+            "año": "actualizado",
+            "problemas_comunes": [
+                "Sobrecalentamiento en tráfico lento",
+                "Fallas en el sistema de inyección",
+                "Desgaste rápido de la cadena",
+                "Problemas con el embrague",
+                "Fugas en el radiador"
+            ],
+            "soluciones": [
+                [
+                    "Instalar ventilador adicional",
+                    "Usar refrigerante Engine Ice",
+                    "Verificar termostato",
+                    "Limpiar aletas del radiador",
+                    "Ajustar mezcla aire/combustible"
+                ],
+                [
+                    "Limpiar inyectores con ultrasonido",
+                    "Verificar presión de la bomba de combustible",
+                    "Revisar sensor MAP",
+                    "Actualizar firmware ECU",
+                    "Reemplazar filtro de combustible"
+                ],
+                [
+                    "Ajustar tensión cada 500 km",
+                    "Lubricar con cadena específica",
+                    "Reemplazar piñones junto con cadena",
+                    "Verificar alineación de rueda trasera",
+                    "Usar cadena O-ring de calidad"
+                ],
+                [
+                    "Ajustar holgura del cable",
+                    "Reemplazar discos si están gastados",
+                    "Lubricar cojinete de empuje",
+                    "Verificar resorte diafragma",
+                    "Sangrar sistema hidráulico"
+                ],
+                [
+                    "Reemplazar juntas del radiador",
+                    "Reparar con soldadura fría si es pequeño",
+                    "Verificar tapón del radiador",
+                    "Limpiar mangueras y conexiones",
+                    "Presurizar sistema para detectar fugas"
+                ]
+            ]
+        },
+        "V-Strom 650": {
+            "año": "actualizado",
+            "problemas_comunes": [
+                "Problemas con el alternador",
+                "Fugas en el sello de la horquilla",
+                "Desgaste de rodamientos de dirección",
+                "Fallas en el sensor de posición del cigüeñal",
+                "Corrosión en conexiones eléctricas"
+            ],
+            "soluciones": [
+                [
+                    "Verificar voltaje de carga (debe ser 13.8-14.4V)",
+                    "Reemplazar escobillas si miden menos de 5mm",
+                    "Limpiar conmutador con lija 600 grit",
+                    "Revisar regulador/rectificador",
+                    "Asegurar conexiones de tierra"
+                ],
+                [
+                    "Reemplazar sellos SKF 47x58x7",
+                    "Limpiar tubos con alcohol isopropílico",
+                    "Verificar nivel de aceite (15W)",
+                    "Ajustar precarga correctamente",
+                    "Instalar protectores de polvo"
+                ],
+                [
+                    "Apretar tuerca de dirección a especificaciones",
+                    "Repackear grasa cada 20,000 km",
+                    "Reemplazar si hay juego detectable",
+                    "Verificar torque de la triple clamp",
+                    "Usar rodamientos de rodillos cónicos"
+                ],
+                [
+                    "Verificar resistencia (190-250Ω a 20°C)",
+                    "Limpiar sensor con contacto limpia",
+                    "Asegurar gap de 0.5-1.5mm al rotor",
+                    "Revisar cableado por cortes",
+                    "Reemplazar si hay códigos de falla"
+                ],
+                [
+                    "Aplicar grasa dieléctrica en conectores",
+                    "Reemplazar terminales oxidados",
+                    "Usar cinta líquida en empalmes",
+                    "Instalar protectores de cableado",
+                    "Lavar con agua destilada y secar"
+                ]
+            ]
+        },
+        "Hayabusa": {
+            "año": "actualizado",
+            "problemas_comunes": [
+                "Frenos con sensación esponjosa",
+                "Sobrecalentamiento en ciudad",
+                "Problemas con el turbo en modelos modificados",
+                "Desgaste de neumáticos traseros",
+                "Fallas en el sistema de inyección"
+            ],
+            "soluciones": [
+                [
+                    "Sangrar sistema con DOT 4 fresco",
+                    "Reemplazar pastillas si están glaseadas",
+                    "Lijar discos con papel 180 grit",
+                    "Verificar estado de las mangueras",
+                    "Usar líquido de frenos de alto punto de ebullición"
+                ],
+                [
+                    "Instalar kit de ventilador adicional",
+                    "Usar refrigerante Water Wetter",
+                    "Verificar funcionamiento del termostato",
+                    "Limpiar radiador con aire comprimido",
+                    "Ajustar mapa de ECU para tráfico"
+                ],
+                [
+                    "Verificar presión de aceite en alimentación",
+                    "Ajustar wastegate a 8-10 psi",
+                    "Limpiar válvula de alivio con carb cleaner",
+                    "Revisar intercooler por fugas",
+                    "Actualizar bomba de combustible"
+                ],
+                [
+                    "Mantener presión correcta (36 psi frío)",
+                    "Rotar neumáticos cada 3,000 km",
+                    "Usar compuestos más duros",
+                    "Verificar alineación",
+                    "Revisar suspensión trasera"
+                ],
+                [
+                    "Limpiar inyectores con equipo profesional",
+                    "Verificar presión de combustible (43 psi)",
+                    "Revisar sensor TPS",
+                    "Actualizar firmware ECU",
+                    "Reemplazar filtro de combustible"
+                ]
+            ]
+        },
+        "Boulevard M109R": {
+            "año": "actualizado",
+            "problemas_comunes": [
+                "Fugas en el sistema de escape",
+                "Problemas con el embrague hidráulico",
+                "Vibraciones en el manubrio",
+                "Fallas en el sistema de arranque",
+                "Desgaste de la transmisión final"
+            ],
+            "soluciones": [
+                [
+                    "Reemplazar juntas de colector",
+                    "Apretar pernos a torque especificado",
+                    "Usar sellador de alta temperatura",
+                    "Verificar soportes del escape",
+                    "Limpiar superficies de contacto"
+                ],
+                [
+                    "Sangrar sistema con DOT 4",
+                    "Reemplazar cilindro maestro si hay fugas",
+                    "Verificar nivel de líquido",
+                    "Ajustar holgura en la palanca",
+                    "Reemplazar discos si están gastados"
+                ],
+                [
+                    "Balancear ruedas con contrapesos",
+                    "Verificar cojinetes de dirección",
+                    "Ajustar torque de la triple clamp",
+                    "Revisar llantas por deformaciones",
+                    "Instalar agarres antivibración"
+                ],
+                [
+                    "Verificar batería (debe tener >12.6V)",
+                    "Limpiar conexiones del solenoide",
+                    "Revisar engranaje de arranque",
+                    "Probar relé de arranque",
+                    "Reemplazar motor de arranque si necesario"
+                ],
+                [
+                    "Cambiar aceite de la transmisión cada 10,000 km",
+                    "Ajustar tensión de la cadena",
+                    "Lubricar cadena cada 500 km",
+                    "Verificar alineación de rueda trasera",
+                    "Reemplazar piñones junto con cadena"
+                ]
+            ]
+        },
+        "DR-Z400": {
+            "año": "actualizado",
+            "problemas_comunes": [
+                "Fugas en el sello de la horquilla",
+                "Problemas con el carburador",
+                "Desgaste de los rodamientos de rueda",
+                "Fallas en el sistema eléctrico",
+                "Sobrecalentamiento en terrenos difíciles"
+            ],
+            "soluciones": [
+                [
+                    "Reemplazar sellos SKF",
+                    "Limpiar tubos con alcohol",
+                    "Verificar nivel de aceite",
+                    "Ajustar precarga correctamente",
+                    "Instalar protectores de polvo"
+                ],
+                [
+                    "Limpiar carburador con ultrasonido",
+                    "Ajustar mezcla aire/combustible",
+                    "Verificar flotador",
+                    "Reemplazar aguja si está gastada",
+                    "Sincronizar con manómetro"
+                ],
+                [
+                    "Repackear grasa cada 15,000 km",
+                    "Reemplazar si hay juego",
+                    "Verificar sellos contra polvo",
+                    "Usar rodamientos de calidad",
+                    "Apretar ejes a torque especificado"
+                ],
+                [
+                    "Verificar conexiones a tierra",
+                    "Revisar fusibles",
+                    "Limpiar conectores con contacto limpia",
+                    "Probar estator (debe dar 50V AC a 5,000 rpm)",
+                    "Reemplazar regulador/rectificador si es necesario"
+                ],
+                [
+                    "Instalar ventilador adicional",
+                    "Usar refrigerante Engine Ice",
+                    "Verificar termostato",
+                    "Limpiar aletas del motor",
+                    "Ajustar mezcla aire/combustible"
+                ]
+            ]
+        }
+    },
+    "KTM": {
+        "1290 Super Duke R": {
+            "año": "actualizado",
+            "problemas_comunes": [
+                "Fallas en el sistema de frenos ABS",
+                "Problemas con el embrague slipper",
+                "Fugas en el sistema de refrigeración",
+                "Error en el sensor de posición del acelerador",
+                "Vibraciones en el manubrio"
+            ],
+            "soluciones": [
+                [
+                    "Actualizar software ABS con herramienta KTM",
+                    "Verificar sensores de rueda",
+                    "Sangrear sistema con herramienta de presión",
+                    "Limpiar anillos tonales",
+                    "Revisar conexiones eléctricas"
+                ],
+                [
+                    "Ajustar holgura del cable",
+                    "Reemplazar discos si están gastados",
+                    "Lubricar cojinete de empuje",
+                    "Verificar resorte diafragma",
+                    "Sangrar sistema hidráulico"
+                ],
+                [
+                    "Reemplazar juntas del radiador",
+                    "Verificar mangueras por grietas",
+                    "Presurizar sistema para detectar fugas",
+                    "Limpiar aletas del radiador",
+                    "Usar refrigerante recomendado"
+                ],
+                [
+                    "Calibrar sensor con herramienta KTM",
+                    "Verificar resistencia del sensor",
+                    "Limpiar pista del potenciómetro",
+                    "Revisar conexiones del arnés",
+                    "Reemplazar si está fuera de especificaciones"
+                ],
+                [
+                    "Balancear ruedas con contrapesos",
+                    "Verificar cojinetes de dirección",
+                    "Ajustar torque de la triple clamp",
+                    "Revisar llantas por deformaciones",
+                    "Instalar agarres antivibración"
+                ]
+            ]
+        },
+        "790 Adventure": {
+            "año": "actualizado",
+            "problemas_comunes": [
+                "Problemas con el sistema de navegación",
+                "Fugas en el sello de la horquilla",
+                "Desgaste de los rodamientos de rueda",
+                "Fallas en el sistema de inyección",
+                "Corrosión en componentes eléctricos"
+            ],
+            "soluciones": [
+                [
+                    "Actualizar firmware del sistema",
+                    "Verificar conexiones GPS",
+                    "Resetear unidad principal",
+                    "Reinstalar mapas",
+                    "Probar con fuente de alimentación alternativa"
+                ],
+                [
+                    "Reemplazar sellos SKF",
+                    "Limpiar tubos con alcohol",
+                    "Verificar nivel de aceite",
+                    "Ajustar precarga correctamente",
+                    "Instalar protectores de polvo"
+                ],
+                [
+                    "Repackear grasa cada 15,000 km",
+                    "Reemplazar si hay juego",
+                    "Verificar sellos contra polvo",
+                    "Usar rodamientos de calidad",
+                    "Apretar ejes a torque especificado"
+                ],
+                [
+                    "Limpiar inyectores con equipo profesional",
+                    "Verificar presión de combustible",
+                    "Revisar sensor TPS",
+                    "Actualizar firmware ECU",
+                    "Reemplazar filtro de combustible"
+                ],
+                [
+                    "Aplicar grasa dieléctrica en conectores",
+                    "Reemplazar terminales oxidados",
+                    "Usar cinta líquida en empalmes",
+                    "Instalar protectores de cableado",
+                    "Lavar con agua destilada y secar"
+                ]
+            ]
+        },
+        "450 EXC-F": {
+            "año": "actualizado",
+            "problemas_comunes": [
+                "Desgaste rápido de la cadena",
+                "Problemas con el sistema de arranque eléctrico",
+                "Fugas en el sello de la horquilla",
+                "Sobrecalentamiento en terrenos difíciles",
+                "Fallas en el sensor de oxígeno"
+            ],
+            "soluciones": [
+                [
+                    "Ajustar tensión cada 500 km",
+                    "Lubricar con cadena específica",
+                    "Reemplazar piñones junto con cadena",
+                    "Verificar alineación de rueda trasera",
+                    "Usar cadena O-ring de calidad"
+                ],
+                [
+                    "Verificar batería (debe tener >12.6V)",
+                    "Limpiar conexiones del solenoide",
+                    "Revisar engranaje de arranque",
+                    "Probar relé de arranque",
+                    "Reemplazar motor de arranque si necesario"
+                ],
+                [
+                    "Reemplazar sellos SKF",
+                    "Limpiar tubos con alcohol",
+                    "Verificar nivel de aceite",
+                    "Ajustar precarga correctamente",
+                    "Instalar protectores de polvo"
+                ],
+                [
+                    "Instalar ventilador adicional",
+                    "Usar refrigerante Engine Ice",
+                    "Verificar termostato",
+                    "Limpiar aletas del motor",
+                    "Ajustar mezcla aire/combustible"
+                ],
+                [
+                    "Limpiar sensor con contacto limpia",
+                    "Verificar conexiones del arnés",
+                    "Probar resistencia del sensor",
+                    "Reemplazar si está fuera de especificaciones",
+                    "Actualizar firmware ECU"
+                ]
+            ]
+        },
+        "390 Duke": {
+            "año": "actualizado",
+            "problemas_comunes": [
+                "Fallas en el sistema de frenos ABS",
+                "Problemas con el embrague",
+                "Fugas en el sistema de refrigeración",
+                "Error en el sensor de posición del acelerador",
+                "Vibraciones en el manubrio"
+            ],
+            "soluciones": [
+                [
+                    "Actualizar software ABS con herramienta KTM",
+                    "Verificar sensores de rueda",
+                    "Sangrear sistema con herramienta de presión",
+                    "Limpiar anillos tonales",
+                    "Revisar conexiones eléctricas"
+                ],
+                [
+                    "Ajustar holgura del cable",
+                    "Reemplazar discos si están gastados",
+                    "Lubricar cojinete de empuje",
+                    "Verificar resorte diafragma",
+                    "Sangrar sistema hidráulico"
+                ],
+                [
+                    "Reemplazar juntas del radiador",
+                    "Verificar mangueras por grietas",
+                    "Presurizar sistema para detectar fugas",
+                    "Limpiar aletas del radiador",
+                    "Usar refrigerante recomendado"
+                ],
+                [
+                    "Calibrar sensor con herramienta KTM",
+                    "Verificar resistencia del sensor",
+                    "Limpiar pista del potenciómetro",
+                    "Revisar conexiones del arnés",
+                    "Reemplazar si está fuera de especificaciones"
+                ],
+                [
+                    "Balancear ruedas con contrapesos",
+                    "Verificar cojinetes de dirección",
+                    "Ajustar torque de la triple clamp",
+                    "Revisar llantas por deformaciones",
+                    "Instalar agarres antivibración"
+                ]
+            ]
+        },
+        "690 Enduro R": {
+            "año": "actualizado",
+            "problemas_comunes": [
+                "Problemas con el sistema de inyección",
+                "Fugas en el sello de la horquilla",
+                "Desgaste de los rodamientos de rueda",
+                "Fallas en el sistema eléctrico",
+                "Sobrecalentamiento en terrenos difíciles"
+            ],
+            "soluciones": [
+                [
+                    "Limpiar inyectores con equipo profesional",
+                    "Verificar presión de combustible",
+                    "Revisar sensor TPS",
+                    "Actualizar firmware ECU",
+                    "Reemplazar filtro de combustible"
+                ],
+                [
+                    "Reemplazar sellos SKF",
+                    "Limpiar tubos con alcohol",
+                    "Verificar nivel de aceite",
+                    "Ajustar precarga correctamente",
+                    "Instalar protectores de polvo"
+                ],
+                [
+                    "Repackear grasa cada 15,000 km",
+                    "Reemplazar si hay juego",
+                    "Verificar sellos contra polvo",
+                    "Usar rodamientos de calidad",
+                    "Apretar ejes a torque especificado"
+                ],
+                [
+                    "Verificar conexiones a tierra",
+                    "Revisar fusibles",
+                    "Limpiar conectores con contacto limpia",
+                    "Probar estator (debe dar 50V AC a 5,000 rpm)",
+                    "Reemplazar regulador/rectificador si es necesario"
+                ],
+                [
+                    "Instalar ventilador adicional",
+                    "Usar refrigerante Engine Ice",
+                    "Verificar termostato",
+                    "Limpiar aletas del motor",
+                    "Ajustar mezcla aire/combustible"
+                ]
+            ]
+        }
+    },
+    "Triumph": {
+        "Street Triple 765": {
+            "año": "actualizado",
+            "problemas_comunes": [
+                "Fallas en el sistema de frenos ABS",
+                "Problemas con el embrague asistido",
+                "Fugas en el sistema de refrigeración",
+                "Error en el sensor de posición del acelerador",
+                "Vibraciones en el manubrio"
+            ],
+            "soluciones": [
+                [
+                    "Actualizar software ABS con herramienta Triumph",
+                    "Verificar sensores de rueda",
+                    "Sangrear sistema con herramienta de presión",
+                    "Limpiar anillos tonales",
+                    "Revisar conexiones eléctricas"
+                ],
+                [
+                    "Ajustar holgura del cable",
+                    "Reemplazar discos si están gastados",
+                    "Lubricar cojinete de empuje",
+                    "Verificar resorte diafragma",
+                    "Sangrar sistema hidráulico"
+                ],
+                [
+                    "Reemplazar juntas del radiador",
+                    "Verificar mangueras por grietas",
+                    "Presurizar sistema para detectar fugas",
+                    "Limpiar aletas del radiador",
+                    "Usar refrigerante recomendado"
+                ],
+                [
+                    "Calibrar sensor con herramienta Triumph",
+                    "Verificar resistencia del sensor",
+                    "Limpiar pista del potenciómetro",
+                    "Revisar conexiones del arnés",
+                    "Reemplazar si está fuera de especificaciones"
+                ],
+                [
+                    "Balancear ruedas con contrapesos",
+                    "Verificar cojinetes de dirección",
+                    "Ajustar torque de la triple clamp",
+                    "Revisar llantas por deformaciones",
+                    "Instalar agarres antivibración"
+                ]
+            ]
+        },
+        "Bonneville T120": {
+            "año": "actualizado",
+            "problemas_comunes": [
+                "Problemas con el sistema de navegación",
+                "Fugas en el sello de la horquilla",
+                "Desgaste de los rodamientos de rueda",
+                "Fallas en el sistema de inyección",
+                "Corrosión en componentes eléctricos"
+            ],
+            "soluciones": [
+                [
+                    "Actualizar firmware del sistema",
+                    "Verificar conexiones GPS",
+                    "Resetear unidad principal",
+                    "Reinstalar mapas",
+                    "Probar con fuente de alimentación alternativa"
+                ],
+                [
+                    "Reemplazar sellos SKF",
+                    "Limpiar tubos con alcohol",
+                    "Verificar nivel de aceite",
+                    "Ajustar precarga correctamente",
+                    "Instalar protectores de polvo"
+                ],
+                [
+                    "Repackear grasa cada 15,000 km",
+                    "Reemplazar si hay juego",
+                    "Verificar sellos contra polvo",
+                    "Usar rodamientos de calidad",
+                    "Apretar ejes a torque especificado"
+                ],
+                [
+                    "Limpiar inyectores con equipo profesional",
+                    "Verificar presión de combustible",
+                    "Revisar sensor TPS",
+                    "Actualizar firmware ECU",
+                    "Reemplazar filtro de combustible"
+                ],
+                [
+                    "Aplicar grasa dieléctrica en conectores",
+                    "Reemplazar terminales oxidados",
+                    "Usar cinta líquida en empalmes",
+                    "Instalar protectores de cableado",
+                    "Lavar con agua destilada y secar"
+                ]
+            ]
+        },
+        "Tiger 900": {
+            "año": "actualizado",
+            "problemas_comunes": [
+                "Desgaste rápido de la cadena",
+                "Problemas con el sistema de arranque eléctrico",
+                "Fugas en el sello de la horquilla",
+                "Sobrecalentamiento en terrenos difíciles",
+                "Fallas en el sensor de oxígeno"
+            ],
+            "soluciones": [
+                [
+                    "Ajustar tensión cada 500 km",
+                    "Lubricar con cadena específica",
+                    "Reemplazar piñones junto con cadena",
+                    "Verificar alineación de rueda trasera",
+                    "Usar cadena O-ring de calidad"
+                ],
+                [
+                    "Verificar batería (debe tener >12.6V)",
+                    "Limpiar conexiones del solenoide",
+                    "Revisar engranaje de arranque",
+                    "Probar relé de arranque",
+                    "Reemplazar motor de arranque si necesario"
+                ],
+                [
+                    "Reemplazar sellos SKF",
+                    "Limpiar tubos con alcohol",
+                    "Verificar nivel de aceite",
+                    "Ajustar precarga correctamente",
+                    "Instalar protectores de polvo"
+                ],
+                [
+                    "Instalar ventilador adicional",
+                    "Usar refrigerante Engine Ice",
+                    "Verificar termostato",
+                    "Limpiar aletas del motor",
+                    "Ajustar mezcla aire/combustible"
+                ],
+                [
+                    "Limpiar sensor con contacto limpia",
+                    "Verificar conexiones del arnés",
+                    "Probar resistencia del sensor",
+                    "Reemplazar si está fuera de especificaciones",
+                    "Actualizar firmware ECU"
+                ]
+            ]
+        },
+        "Rocket 3": {
+            "año": "actualizado",
+            "problemas_comunes": [
+                "Fallas en el sistema de frenos ABS",
+                "Problemas con el embrague",
+                "Fugas en el sistema de refrigeración",
+                "Error en el sensor de posición del acelerador",
+                "Vibraciones en el manubrio"
+            ],
+            "soluciones": [
+                [
+                    "Actualizar software ABS con herramienta Triumph",
+                    "Verificar sensores de rueda",
+                    "Sangrear sistema con herramienta de presión",
+                    "Limpiar anillos tonales",
+                    "Revisar conexiones eléctricas"
+                ],
+                [
+                    "Ajustar holgura del cable",
+                    "Reemplazar discos si están gastados",
+                    "Lubricar cojinete de empuje",
+                    "Verificar resorte diafragma",
+                    "Sangrar sistema hidráulico"
+                ],
+                [
+                    "Reemplazar juntas del radiador",
+                    "Verificar mangueras por grietas",
+                    "Presurizar sistema para detectar fugas",
+                    "Limpiar aletas del radiador",
+                    "Usar refrigerante recomendado"
+                ],
+                [
+                    "Calibrar sensor con herramienta Triumph",
+                    "Verificar resistencia del sensor",
+                    "Limpiar pista del potenciómetro",
+                    "Revisar conexiones del arnés",
+                    "Reemplazar si está fuera de especificaciones"
+                ],
+                [
+                    "Balancear ruedas con contrapesos",
+                    "Verificar cojinetes de dirección",
+                    "Ajustar torque de la triple clamp",
+                    "Revisar llantas por deformaciones",
+                    "Instalar agarres antivibración"
+                ]
+            ]
+        },
+        "Speed Triple 1200": {
+            "año": "actualizado",
+            "problemas_comunes": [
+                "Problemas con el sistema de inyección",
+                "Fugas en el sello de la horquilla",
+                "Desgaste de los rodamientos de rueda",
+                "Fallas en el sistema eléctrico",
+                "Sobrecalentamiento en terrenos difíciles"
+            ],
+            "soluciones": [
+                [
+                    "Limpiar inyectores con equipo profesional",
+                    "Verificar presión de combustible",
+                    "Revisar sensor TPS",
+                    "Actualizar firmware ECU",
+                    "Reemplazar filtro de combustible"
+                ],
+                [
+                    "Reemplazar sellos SKF",
+                    "Limpiar tubos con alcohol",
+                    "Verificar nivel de aceite",
+                    "Ajustar precarga correctamente",
+                    "Instalar protectores de polvo"
+                ],
+                [
+                    "Repackear grasa cada 15,000 km",
+                    "Reemplazar si hay juego",
+                    "Verificar sellos contra polvo",
+                    "Usar rodamientos de calidad",
+                    "Apretar ejes a torque especificado"
+                ],
+                [
+                    "Verificar conexiones a tierra",
+                    "Revisar fusibles",
+                    "Limpiar conectores con contacto limpia",
+                    "Probar estator (debe dar 50V AC a 5,000 rpm)",
+                    "Reemplazar regulador/rectificador si es necesario"
+                ],
+                [
+                    "Instalar ventilador adicional",
+                    "Usar refrigerante Engine Ice",
+                    "Verificar termostato",
+                    "Limpiar aletas del motor",
+                    "Ajustar mezcla aire/combustible"
+                ]
+            ]
+        }
+    },
+    "Royal Enfield": {
+        "Classic 350": {
+            "año": "actualizado",
+            "problemas_comunes": [
+                "Fugas de aceite en el motor",
+                "Problemas con el carburador",
+                "Vibraciones excesivas",
+                "Fallas en el sistema eléctrico",
+                "Desgaste prematuro de neumáticos"
+            ],
+            "soluciones": [
+                [
+                    "Reemplazar juntas del cárter (torque 10-12 Nm)",
+                    "Verificar sellos del árbol de levas",
+                    "Usar aceite 20W50",
+                    "Limpiar respiradero de cárter",
+                    "Inspeccionar tapones de inspección"
+                ],
+                [
+                    "Limpiar carburador con ultrasonido",
+                    "Ajustar mezcla aire/combustible",
+                    "Verificar flotador",
+                    "Reemplazar aguja si está gastada",
+                    "Sincronizar con manómetro"
+                ],
+                [
+                    "Balancear ruedas con contrapesos",
+                    "Verificar cojinetes de dirección",
+                    "Ajustar torque de la triple clamp",
+                    "Revisar llantas por deformaciones",
+                    "Instalar agarres antivibración"
+                ],
+                [
+                    "Verificar conexiones a tierra",
+                    "Revisar fusibles",
+                    "Limpiar conectores con contacto limpia",
+                    "Probar estator (debe dar 50V AC a 5,000 rpm)",
+                    "Reemplazar regulador/rectificador si es necesario"
+                ],
+                [
+                    "Mantener presión correcta (28-32 psi)",
+                    "Rotar neumáticos cada 3,000 km",
+                    "Usar compuestos más duros",
+                    "Verificar alineación",
+                    "Revisar suspensión trasera"
+                ]
+            ]
+        },
+        "Himalayan": {
+            "año": "actualizado",
+            "problemas_comunes": [
+                "Fugas en el sello de la horquilla",
+                "Problemas con el sistema de inyección",
+                "Desgaste de los rodamientos de rueda",
+                "Fallas en el sistema eléctrico",
+                "Sobrecalentamiento en terrenos difíciles"
+            ],
+            "soluciones": [
+                [
+                    "Reemplazar sellos SKF",
+                    "Limpiar tubos con alcohol",
+                    "Verificar nivel de aceite",
+                    "Ajustar precarga correctamente",
+                    "Instalar protectores de polvo"
+                ],
+                [
+                    "Limpiar inyectores con equipo profesional",
+                    "Verificar presión de combustible",
+                    "Revisar sensor TPS",
+                    "Actualizar firmware ECU",
+                    "Reemplazar filtro de combustible"
+                ],
+                [
+                    "Repackear grasa cada 15,000 km",
+                    "Reemplazar si hay juego",
+                    "Verificar sellos contra polvo",
+                    "Usar rodamientos de calidad",
+                    "Apretar ejes a torque especificado"
+                ],
+                [
+                    "Verificar conexiones a tierra",
+                    "Revisar fusibles",
+                    "Limpiar conectores con contacto limpia",
+                    "Probar estator (debe dar 50V AC a 5,000 rpm)",
+                    "Reemplazar regulador/rectificador si es necesario"
+                ],
+                [
+                    "Instalar ventilador adicional",
+                    "Usar refrigerante Engine Ice",
+                    "Verificar termostato",
+                    "Limpiar aletas del motor",
+                    "Ajustar mezcla aire/combustible"
+                ]
+            ]
+        },
+        "Interceptor 650": {
+            "año": "actualizado",
+            "problemas_comunes": [
+                "Fallas en el sistema de frenos ABS",
+                "Problemas con el embrague",
+                "Fugas en el sistema de refrigeración",
+                "Error en el sensor de posición del acelerador",
+                "Vibraciones en el manubrio"
+            ],
+            "soluciones": [
+                [
+                    "Actualizar software ABS con herramienta Royal Enfield",
+                    "Verificar sensores de rueda",
+                    "Sangrear sistema con herramienta de presión",
+                    "Limpiar anillos tonales",
+                    "Revisar conexiones eléctricas"
+                ],
+                [
+                    "Ajustar holgura del cable",
+                    "Reemplazar discos si están gastados",
+                    "Lubricar cojinete de empuje",
+                    "Verificar resorte diafragma",
+                    "Sangrar sistema hidráulico"
+                ],
+                [
+                    "Reemplazar juntas del radiador",
+                    "Verificar mangueras por grietas",
+                    "Presurizar sistema para detectar fugas",
+                    "Limpiar aletas del radiador",
+                    "Usar refrigerante recomendado"
+                ],
+                [
+                    "Calibrar sensor con herramienta Royal Enfield",
+                    "Verificar resistencia del sensor",
+                    "Limpiar pista del potenciómetro",
+                    "Revisar conexiones del arnés",
+                    "Reemplazar si está fuera de especificaciones"
+                ],
+                [
+                    "Balancear ruedas con contrapesos",
+                    "Verificar cojinetes de dirección",
+                    "Ajustar torque de la triple clamp",
+                    "Revisar llantas por deformaciones",
+                    "Instalar agarres antivibración"
+                ]
+            ]
+        },
+        "Continental GT 650": {
+            "año": "actualizado",
+            "problemas_comunes": [
+                "Problemas con el sistema de inyección",
+                "Fugas en el sello de la horquilla",
+                "Desgaste de los rodamientos de rueda",
+                "Fallas en el sistema eléctrico",
+                "Sobrecalentamiento en terrenos difíciles"
+            ],
+            "soluciones": [
+                [
+                    "Limpiar inyectores con equipo profesional",
+                    "Verificar presión de combustible",
+                    "Revisar sensor TPS",
+                    "Actualizar firmware ECU",
+                    "Reemplazar filtro de combustible"
+                ],
+                [
+                    "Reemplazar sellos SKF",
+                    "Limpiar tubos con alcohol",
+                    "Verificar nivel de aceite",
+                    "Ajustar precarga correctamente",
+                    "Instalar protectores de polvo"
+                ],
+                [
+                    "Repackear grasa cada 15,000 km",
+                    "Reemplazar si hay juego",
+                    "Verificar sellos contra polvo",
+                    "Usar rodamientos de calidad",
+                    "Apretar ejes a torque especificado"
+                ],
+                [
+                    "Verificar conexiones a tierra",
+                    "Revisar fusibles",
+                    "Limpiar conectores con contacto limpia",
+                    "Probar estator (debe dar 50V AC a 5,000 rpm)",
+                    "Reemplazar regulador/rectificador si es necesario"
+                ],
+                [
+                    "Instalar ventilador adicional",
+                    "Usar refrigerante Engine Ice",
+                    "Verificar termostato",
+                    "Limpiar aletas del motor",
+                    "Ajustar mezcla aire/combustible"
+                ]
+            ]
+        },
+        "Meteor 350": {
+    "año": "actualizado",
+    "problemas_comunes": [
+        "Fugas de aceite en el motor",
+        "Problemas con el sistema de inyección",
+        "Vibraciones excesivas",
+        "Fallas en el sistema eléctrico",
+        "Desgaste prematuro de neumáticos"
+    ],
+    "soluciones": [
+        [
+            "Reemplazar juntas del cárter (torque 10-12 Nm)",
+            "Verificar sellos del árbol de levas",
+            "Usar aceite 20W50",
+            "Limpiar respiradero de cárter",
+            "Inspeccionar tapones de inspección"
+        ],
+        [
+            "Limpiar inyectores con equipo profesional",
+            "Verificar presión de combustible",
+            "Revisar sensor TPS",
+            "Actualizar firmware ECU",
+            "Reemplazar filtro de combustible"
+        ],
+        [
+            "Balancear ruedas con contrapesos",
+            "Verificar cojinetes de dirección",
+            "Ajustar torque de la triple clamp",
+            "Revisar llantas por deformaciones",
+            "Instalar agarres antivibración"
+        ],
+        [
+            "Verificar conexiones a tierra",
+            "Revisar fusibles",
+            "Limpiar conectores con contacto limpia",
+            "Probar estator (debe dar 50V AC a 5,000 rpm)",
+            "Reemplazar regulador/rectificador si es necesario"
+        ],
+        [
+            "Mantener presión correcta (28-32 psi)",
+            "Rotar neumáticos cada 3,000 km",
+            "Usar compuestos más duros",
+            "Verificar alineación",
+            "Revisar suspensión trasera"
+        ]
+    ]
+   }
+  },  
+    "Benelli": {
+        "TNT 300": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Fugas en el radiador",
+            "Problemas con el sensor de posición del cigüeñal",
+            "Vibraciones en el manubrio a altas RPM",
+            "Desgaste prematuro de la cadena",
+            "Fallas en el sistema de inyección"
+        ],
+        "soluciones": [
+            [
+                "Reemplazar juntas del radiador (torque 8-10 Nm)",
+                "Limpiar aletas con cepillo de latón",
+                "Usar refrigerante recomendado por fabricante",
+                "Verificar tapón del radiador (13-15 psi)",
+                "Inspeccionar mangueras cada 5,000 km"
+            ],
+            [
+                "Verificar resistencia (480-520Ω a 20°C)",
+                "Ajustar gap a 0.8-1.2mm",
+                "Limpiar con contacto limpia",
+                "Revisar cableado del arnés",
+                "Reemplazar si muestra códigos de falla"
+            ],
+            [
+                "Balancear ruedas con contrapesos dinámicos",
+                "Ajustar cojinetes de dirección (torque 22-25 Nm)",
+                "Verificar llantas por deformaciones",
+                "Instalar agarres antivibración",
+                "Revisar torque de los pernos del motor"
+            ],
+            [
+                "Ajustar tensión cada 500 km (15-20mm de juego)",
+                "Lubricar con cera para cadenas",
+                "Reemplazar piñones junto con cadena",
+                "Verificar alineación con láser",
+                "Usar cadena DID 520VX"
+            ],
+            [
+                "Limpiar inyectores con equipo ultrasonido",
+                "Verificar presión de combustible (3.0-3.2 bar)",
+                "Resetear adaptativos con scanner",
+                "Actualizar firmware ECU",
+                "Reemplazar filtro de combustible"
+            ]
+        ]
+    },
+    "TRK 502": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Fugas en las horquillas",
+            "Problemas con el alternador",
+            "Sobrecalentamiento en tráfico",
+            "Ruidos en el embrague",
+            "Fallas en el cuadro de instrumentos"
+        ],
+        "soluciones": [
+            [
+                "Reemplazar sellos SKF 41x55x10.5",
+                "Usar aceite 15W para horquillas",
+                "Ajustar precarga (5-7 líneas visibles)",
+                "Instalar protectores de polvo",
+                "Verificar estado de los tubos"
+            ],
+            [
+                "Probar voltaje de carga (13.8-14.4V a 3,000 rpm)",
+                "Reemplazar regulador/rectificador si sobrepasa 15V",
+                "Limpiar conmutador con lija 800 grit",
+                "Verificar conexiones de tierra",
+                "Reemplazar escobillas si miden <5mm"
+            ],
+            [
+                "Instalar ventilador adicional",
+                "Usar refrigerante Engine Ice",
+                "Verificar termostato (debe abrir a 82°C)",
+                "Limpiar radiador con aire comprimido",
+                "Evitar rpm bajas en paradas prolongadas"
+            ],
+            [
+                "Ajustar holgura del cable (2-3mm)",
+                "Reemplazar discos si grosor <2.8mm",
+                "Lubricar cojinete de empuje con grasa molibdeno",
+                "Verificar resorte diafragma (debe tener 42kg de presión)",
+                "Sangrar sistema con DOT 4"
+            ],
+            [
+                "Verificar conexión del conector de 16 pines",
+                "Resetear unidad desconectando batería 15 minutos",
+                "Actualizar firmware con herramienta Benelli",
+                "Revisar fusible F12",
+                "Reemplazar unidad si persiste falla"
+            ]
+        ]
+    },
+    "Leoncino 500": {
+        "año": "2017-presente",
+        "problemas_comunes": [
+            "Fugas en el sello del árbol de levas",
+            "Problemas con el sensor TPS",
+            "Desgaste de rodamientos de rueda",
+            "Fallas en el sistema ABS",
+            "Corrosión en componentes eléctricos"
+        ],
+        "soluciones": [
+            [
+                "Reemplazar sello (medida 30x42x7)",
+                "Limpiar superficie de contacto con acetona",
+                "Aplicar sellador líquido en borde externo",
+                "Verificar respiradero del cárter",
+                "Torquear tapa a 12 Nm en cruz"
+            ],
+            [
+                "Calibrar con scanner Benelli (0.58-0.62V en ralentí)",
+                "Verificar resistencia (4.5-5.5kΩ)",
+                "Limpiar pista del potenciómetro",
+                "Asegurar conexiones del arnés",
+                "Reemplazar si supera 4.8V a WOT"
+            ],
+            [
+                "Repackear grasa cada 10,000 km",
+                "Usar rodamientos SKF 6004-2RS",
+                "Verificar sellos contra polvo",
+                "Apretar ejes a torque especificado (110 Nm)",
+                "Reemplazar en pareja aunque solo uno falle"
+            ],
+            [
+                "Limpiar anillos tonales con alcohol isopropílico",
+                "Verificar sensores (resistencia 800-1,200Ω)",
+                "Sangrear sistema con herramienta de presión",
+                "Actualizar software ABS",
+                "Revisar módulo bajo asiento"
+            ],
+            [
+                "Aplicar grasa dieléctrica en conectores",
+                "Reemplazar terminales oxidados",
+                "Usar cinta líquida en empalmes",
+                "Instalar protectores de cableado",
+                "Lavar con agua destilada después de lluvia salina"
+            ]
+        ]
+    },
+    "752S": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Consumo excesivo de aceite",
+            "Problemas con el embrague deslizante",
+            "Fugas en el sistema de escape",
+            "Vibraciones a medio régimen",
+            "Fallas en el sistema de encendido"
+        ],
+        "soluciones": [
+            [
+                "Verificar segmentos (consumo máximo 1L/1,000 km)",
+                "Usar aceite 15W50 sintético",
+                "Revisar guías de válvulas",
+                "Inspeccionar retenes de válvulas",
+                "Cambiar respiradero del cárter"
+            ],
+            [
+                "Ajustar holgura en palanca (4-5mm)",
+                "Reemplazar discos si están azulados",
+                "Lubricar cojinete de empuje con grasa de molibdeno",
+                "Verificar resorte diafragma",
+                "Usar aceite JASO MA2"
+            ],
+            [
+                "Reemplazar juntas de colector (torque 25 Nm)",
+                "Aplicar sellador de alta temperatura",
+                "Verificar soportes del escape",
+                "Limpiar superficies de contacto",
+                "Instalar nuevos anillos de retención"
+            ],
+            [
+                "Balancear ruedas con contrapesos adhesivos",
+                "Verificar torque de pernos del motor",
+                "Ajustar carburantes (sincronizar con manómetro)",
+                "Revisar amortiguadores traseros",
+                "Instalar agarres antivibración"
+            ],
+            [
+                "Reemplazar bujías cada 10,000 km (NGK LMAR8F)",
+                "Verificar bobinas (resistencia primaria 3-5Ω)",
+                "Probar cables de bujía (5kΩ/max)",
+                "Limpiar conexiones del arnés",
+                "Actualizar firmware ECU"
+            ]
+        ]
+    },
+    "Imperiale 400": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Arranque difícil en frío",
+            "Fugas en el carburador",
+            "Corrosión en componentes cromados",
+            "Desgaste de pastillas de freno",
+            "Fallas en el sistema de carga"
+        ],
+        "soluciones": [
+            [
+                "Instalar bujías NGK D8EA",
+                "Verificar batería (>12.6V en reposo)",
+                "Ajustar mezcla aire/combustible (2 vueltas)",
+                "Usar gasolina premium sin etanol",
+                "Precalentar con 3-4 golpes de acelerador"
+            ],
+            [
+                "Reemplazar juntas del carburador (kit #BND-042)",
+                "Ajustar tornillos de fijación a 1.5 Nm",
+                "Limpiar válvula de enriquecedor con spray",
+                "Verificar nivel de flotador (14mm)",
+                "Sincronizar con manómetro de vacío"
+            ],
+            [
+                "Pulir con compuesto para cromo",
+                "Aplicar cera protectora cada 2 meses",
+                "Reemplazar tornillos por acero inoxidable",
+                "Lavar con jabón neutro y secar inmediatamente",
+                "Evitar exposición a salitre"
+            ],
+            [
+                "Lijar discos con papel 120-150 grit",
+                "Usar pastillas orgánicas EBC FA179",
+                "Verificar pistones de caliper (deben moverse libremente)",
+                "Limpiar con alcohol isopropílico",
+                "Sangrear sistema con DOT 3"
+            ],
+            [
+                "Probar estator (debe dar 50V AC a 5,000 rpm)",
+                "Reemplazar regulador/rectificador si voltaje >15V",
+                "Limpiar conmutador con lija 600 grit",
+                "Verificar conexiones de tierra",
+                "Reemplazar escobillas si miden <5mm"
+            ]
+        ]
+    }
+},
+"MV Agusta": {
+    "Brutale 800": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Fallas en el sistema de inyección",
+            "Problemas con el embrague asistido",
+            "Sobrecalentamiento en ciudad",
+            "Error en el sensor de posición del acelerador",
+            "Vibraciones en el manubrio"
+        ],
+        "soluciones": [
+            [
+                "Limpiar inyectores con equipo ultrasonido",
+                "Verificar presión de combustible (3.5 bar)",
+                "Resetear adaptativos con scanner MV",
+                "Actualizar firmware ECU",
+                "Reemplazar filtro de combustible"
+            ],
+            [
+                "Ajustar holgura del cable (1-2mm)",
+                "Reemplazar discos si grosor <3.0mm",
+                "Lubricar cojinete de empuje con grasa específica",
+                "Verificar resorte diafragma",
+                "Sangrar sistema con DOT 5.1"
+            ],
+            [
+                "Instalar kit de ventilador adicional",
+                "Usar refrigerante Motul Motocool Expert",
+                "Verificar termostato (apertura a 88°C)",
+                "Limpiar radiador con aire comprimido",
+                "Ajustar mapa ECU para tráfico"
+            ],
+            [
+                "Calibrar con herramienta MV (0.6-4.8V rango completo)",
+                "Verificar resistencia (4.8kΩ ±10%)",
+                "Limpiar pista del potenciómetro",
+                "Revisar conexiones del arnés",
+                "Reemplazar si muestra códigos P0120-P0123"
+            ],
+            [
+                "Balancear ruedas con contrapesos centrados",
+                "Verificar cojinetes de dirección (torque 35 Nm)",
+                "Ajustar triple clamp (torque 22 Nm)",
+                "Revisar llantas por deformaciones",
+                "Instalar agarres antivibración Rizoma"
+            ]
+        ]
+    },
+    "Dragster 800 RR": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Fallas en el sistema ABS",
+            "Problemas con la electrónica de marchas",
+            "Fugas en el sistema de refrigeración",
+            "Desgaste de neumáticos traseros",
+            "Fallas en el sistema de escape"
+        ],
+        "soluciones": [
+            [
+                "Actualizar software ABS con herramienta MV",
+                "Verificar sensores (resistencia 1,000-1,500Ω)",
+                "Sangrear sistema con presión",
+                "Limpiar anillos tonales",
+                "Revisar módulo bajo asiento"
+            ],
+            [
+                "Calibrar sensor de posición con scanner",
+                "Verificar conexiones del arnés",
+                "Ajustar cable del embrague",
+                "Actualizar firmware ECU",
+                "Reemplazar sensor si muestra códigos P0805-P0808"
+            ],
+            [
+                "Reemplazar juntas del radiador (torque 8 Nm)",
+                "Verificar mangueras por grietas",
+                "Presurizar sistema (1.5 bar máximo)",
+                "Limpiar aletas del radiador",
+                "Usar refrigerante recomendado"
+            ],
+            [
+                "Mantener presión (36 psi frío)",
+                "Rotar neumáticos cada 3,000 km",
+                "Usar compuestos más duros (Pirelli Diablo Rosso III)",
+                "Verificar alineación con láser",
+                "Revisar suspensión trasera"
+            ],
+            [
+                "Reemplazar juntas de colector (torque 28 Nm)",
+                "Aplicar sellador de alta temperatura",
+                "Verificar soportes del escape",
+                "Limpiar superficies de contacto",
+                "Instalar nuevos anillos de retención"
+            ]
+        ]
+    },
+    "Turismo Veloce 800": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Problemas con el sistema de navegación",
+            "Fugas en el sello de la horquilla",
+            "Desgaste de rodamientos de rueda",
+            "Fallas en el sistema eléctrico",
+            "Sobrecalentamiento en tráfico"
+        ],
+        "soluciones": [
+            [
+                "Actualizar firmware del sistema",
+                "Verificar conexión GPS (antena en espejo)",
+                "Resetear unidad principal",
+                "Reinstalar mapas desde USB",
+                "Probar con fuente de alimentación alternativa"
+            ],
+            [
+                "Reemplazar sellos Öhlins 43mm específicos",
+                "Limpiar tubos con alcohol isopropílico",
+                "Verificar nivel de aceite (7.5W)",
+                "Ajustar precarga (15-20mm sag)",
+                "Instalar protectores de polvo"
+            ],
+            [
+                "Repackear grasa cada 20,000 km",
+                "Usar rodamientos SKF",
+                "Verificar sellos contra polvo",
+                "Apretar ejes a torque especificado (120 Nm)",
+                "Reemplazar en pareja"
+            ],
+            [
+                "Verificar conexiones a tierra bajo tanque",
+                "Revisar fusibles (especialmente F15 y F23)",
+                "Limpiar conectores con contacto limpia",
+                "Probar estator (debe dar 60V AC a 5,000 rpm)",
+                "Reemplazar regulador/rectificador si voltaje >15V"
+            ],
+            [
+                "Instalar ventilador adicional",
+                "Usar refrigerante Motul Motocool Expert",
+                "Verificar termostato (apertura a 88°C)",
+                "Limpiar aletas del motor",
+                "Ajustar mezcla aire/combustible"
+            ]
+        ]
+    },
+    "F3 800": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Fallas en el sistema de frenos",
+            "Problemas con el embrague",
+            "Fugas en el sistema de refrigeración",
+            "Error en el sensor de posición del acelerador",
+            "Vibraciones en el carenado"
+        ],
+        "soluciones": [
+            [
+                "Sangrear sistema con DOT 5.1",
+                "Reemplazar pastillas si grosor <3mm",
+                "Lijar discos con papel 180 grit",
+                "Verificar estado de las mangueras",
+                "Usar líquido de frenos de alto punto de ebullición"
+            ],
+            [
+                "Ajustar holgura del cable (3-4mm)",
+                "Reemplazar discos si están azulados",
+                "Lubricar cojinete de empuje",
+                "Verificar resorte diafragma",
+                "Sangrar sistema hidráulico"
+            ],
+            [
+                "Reemplazar juntas del radiador",
+                "Verificar mangueras por grietas",
+                "Presurizar sistema (1.5 bar máximo)",
+                "Limpiar aletas del radiador",
+                "Usar refrigerante recomendado"
+            ],
+            [
+                "Calibrar con herramienta MV (0.6-4.8V rango completo)",
+                "Verificar resistencia (4.8kΩ ±10%)",
+                "Limpiar pista del potenciómetro",
+                "Revisar conexiones del arnés",
+                "Reemplazar si muestra códigos P0120-P0123"
+            ],
+            [
+                "Ajustar todos los tornillos del carenado (torque 5 Nm)",
+                "Instalar arandelas de goma",
+                "Verificar soportes del faro",
+                "Usar cinta antivibración 3M",
+                "Revisar ajuste de los espejos"
+            ]
+        ]
+    },
+    "Superveloce 800": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Problemas con el sistema de inyección",
+            "Fugas en el sello de la horquilla",
+            "Desgaste de los rodamientos de rueda",
+            "Fallas en el sistema eléctrico",
+            "Sobrecalentamiento en tráfico"
+        ],
+        "soluciones": [
+            [
+                "Limpiar inyectores con equipo profesional",
+                "Verificar presión de combustible (3.5 bar)",
+                "Revisar sensor TPS",
+                "Actualizar firmware ECU",
+                "Reemplazar filtro de combustible"
+            ],
+            [
+                "Reemplazar sellos Öhlins 43mm específicos",
+                "Limpiar tubos con alcohol isopropílico",
+                "Verificar nivel de aceite (7.5W)",
+                "Ajustar precarga (15-20mm sag)",
+                "Instalar protectores de polvo"
+            ],
+            [
+                "Repackear grasa cada 15,000 km",
+                "Usar rodamientos SKF",
+                "Verificar sellos contra polvo",
+                "Apretar ejes a torque especificado (120 Nm)",
+                "Reemplazar en pareja"
+            ],
+            [
+                "Verificar conexiones a tierra bajo tanque",
+                "Revisar fusibles (especialmente F15 y F23)",
+                "Limpiar conectores con contacto limpia",
+                "Probar estator (debe dar 60V AC a 5,000 rpm)",
+                "Reemplazar regulador/rectificador si voltaje >15V"
+            ],
+            [
+                "Instalar ventilador adicional",
+                "Usar refrigerante Motul Motocool Expert",
+                "Verificar termostato (apertura a 88°C)",
+                "Limpiar aletas del motor",
+                "Ajustar mezcla aire/combustible"
+            ]
+        ]
+    }
+},
+"Moto Guzzi": {
+    "V7 III Stone": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Fugas en la junta de culata",
+            "Problemas con el sensor TPS",
+            "Vibraciones en el motor",
+            "Fallas en el sistema eléctrico",
+            "Desgaste de la transmisión por cardán"
+        ],
+        "soluciones": [
+            [
+                "Reemplazar junta (torque 30 Nm en secuencia)",
+                "Limpiar superficies con espátula plástica",
+                "Verificar planitud de culata (máx 0.05mm)",
+                "Usar sellador líquido en puntos críticos",
+                "Cambiar tornillos de culata"
+            ],
+            [
+                "Calibrar con herramienta GuzziDiag",
+                "Verificar resistencia (4.5-5.5kΩ)",
+                "Ajustar posición (0.6V en ralentí)",
+                "Limpiar pista del potenciómetro",
+                "Reemplazar si muestra códigos P0120-P0123"
+            ],
+            [
+                "Balancear motor con contrapesos",
+                "Verificar soportes del motor (torque 45 Nm)",
+                "Ajustar carburadores con manómetro",
+                "Revisar estado de los silentblocks",
+                "Instalar agarres antivibración"
+            ],
+            [
+                "Verificar conexiones en el relé principal",
+                "Probar regulador/rectificador (14.2-14.6V)",
+                "Limpiar bornes de batería",
+                "Revisar fusibles en caja bajo asiento",
+                "Reemplazar cables en mal estado"
+            ],
+            [
+                "Cambiar aceite del cardán cada 20,000 km",
+                "Usar grasa específica para crucetas",
+                "Verificar juego en las juntas universales",
+                "Alinear transmisión con láser",
+                "Reemplazar cardán si hay holguras"
+            ]
+        ]
+    },
+    "V85 TT": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Fugas en el sello de la horquilla",
+            "Problemas con el sistema de navegación",
+            "Desgaste de rodamientos de rueda",
+            "Fallas en el sistema ABS",
+            "Sobrecalentamiento en tráfico"
+        ],
+        "soluciones": [
+            [
+                "Reemplazar sellos SKF 43mm específicos",
+                "Limpiar tubos con alcohol isopropílico",
+                "Verificar nivel de aceite (7.5W)",
+                "Ajustar precarga (20-25mm sag)",
+                "Instalar protectores de polvo"
+            ],
+            [
+                "Actualizar firmware desde USB",
+                "Verificar conexión GPS (antena en parabrisas)",
+                "Resetear unidad principal",
+                "Reinstalar mapas",
+                "Probar con fuente de alimentación alternativa"
+            ],
+            [
+                "Repackear grasa cada 15,000 km",
+                "Usar rodamientos SKF",
+                "Verificar sellos contra polvo",
+                "Apretar ejes a torque especificado (110 Nm)",
+                "Reemplazar en pareja"
+            ],
+            [
+                "Limpiar anillos tonales con alcohol isopropílico",
+                "Verificar sensores (resistencia 1,000-1,500Ω)",
+                "Sangrear sistema con herramienta de presión",
+                "Actualizar software ABS",
+                "Revisar módulo bajo tanque"
+            ],
+            [
+                "Instalar ventilador adicional",
+                "Usar refrigerante específico Moto Guzzi",
+                "Verificar termostato (apertura a 85°C)",
+                "Limpiar aletas del motor",
+                "Ajustar mezcla aire/combustible"
+            ]
+        ]
+    },
+    "California 1400": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Fugas en el sistema de refrigeración",
+            "Problemas con el embrague asistido",
+            "Vibraciones en el manubrio",
+            "Fallas en el sistema de frenos",
+            "Corrosión en componentes eléctricos"
+        ],
+        "soluciones": [
+            [
+                "Reemplazar juntas del radiador (torque 10 Nm)",
+                "Verificar mangueras por grietas",
+                "Presurizar sistema (1.2 bar máximo)",
+                "Limpiar aletas del radiador",
+                "Usar refrigerante recomendado"
+            ],
+            [
+                "Ajustar holgura del cable (2-3mm)",
+                "Reemplazar discos si grosor <3.2mm",
+                "Lubricar cojinete de empuje",
+                "Verificar resorte diafragma",
+                "Sangrar sistema con DOT 4"
+            ],
+            [
+                "Balancear ruedas con contrapesos",
+                "Verificar cojinetes de dirección (torque 35 Nm)",
+                "Ajustar triple clamp (torque 25 Nm)",
+                "Revisar llantas por deformaciones",
+                "Instalar agarres antivibración"
+            ],
+            [
+                "Sangrear sistema con DOT 4",
+                "Reemplazar pastillas si grosor <3mm",
+                "Lijar discos con papel 180 grit",
+                "Verificar estado de las mangueras",
+                "Usar líquido de frenos de alto punto de ebullición"
+            ],
+            [
+                "Aplicar grasa dieléctrica en conectores",
+                "Reemplazar terminales oxidados",
+                "Usar cinta líquida en empalmes",
+                "Instalar protectores de cableado",
+                "Lavar con agua destilada después de lluvia salina"
+            ]
+        ]
+    },
+    "MGX-21": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Problemas con el sistema de audio",
+            "Fugas en el sistema de aire acondicionado",
+            "Desgaste de neumáticos traseros",
+            "Fallas en el computador de viaje",
+            "Error en el sistema de inyección"
+        ],
+        "soluciones": [
+            [
+                "Actualizar firmware del amplificador",
+                "Verificar conexiones en el conector de 40 pines",
+                "Reemplazar altavoces delanteros (4Ω 25W)",
+                "Resetear sistema manteniendo POWER + MENU",
+                "Probar con fuente de audio alternativa"
+            ],
+            [
+                "Realizar prueba de presión con nitrógeno",
+                "Reemplazar válvula de expansión",
+                "Verificar sellos O-ring en compresor (PAG 46 oil)",
+                "Limpiar condensador con espuma fina",
+                "Recargar con 14 oz de R134a"
+            ],
+            [
+                "Mantener presión (36 psi frío)",
+                "Rotar neumáticos cada 3,000 km",
+                "Usar compuestos más duros",
+                "Verificar alineación",
+                "Revisar suspensión trasera"
+            ],
+            [
+                "Verificar sensor de velocidad en rueda trasera",
+                "Resetear unidad desconectando batería 30 minutos",
+                "Actualizar software con scanner Guzzi",
+                "Limpiar conectores del tablero",
+                "Reemplazar módulo si muestra códigos U1016"
+            ],
+            [
+                "Limpiar inyectores con equipo ultrasonido",
+                "Verificar presión de combustible (3.0 bar)",
+                "Probar sensores MAP y IAT con multímetro",
+                "Resetear adaptativos con scanner",
+                "Actualizar mapa ECU a última versión"
+            ]
+        ]
+    },
+    "Audace Carbon": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Fugas en el sistema de escape",
+            "Problemas con el embrague",
+            "Vibraciones en el piso",
+            "Fallas en el indicador de combustible",
+            "Corrosión en componentes de carbono"
+        ],
+        "soluciones": [
+            [
+                "Reemplazar juntas de colector (torque 28 Nm)",
+                "Aplicar sellador de alta temperatura",
+                "Verificar soportes del escape",
+                "Limpiar superficies de contacto",
+                "Instalar nuevos anillos de retención"
+            ],
+            [
+                "Ajustar holgura del cable (3-4mm)",
+                "Reemplazar discos si están azulados",
+                "Lubricar cojinete de empuje",
+                "Verificar resorte diafragma",
+                "Sangrar sistema con DOT 4"
+            ],
+            [
+                "Ajustar tornillos de motor (torque 45 Nm)",
+                "Instalar kit antivibración de goma",
+                "Verificar soportes del carenado",
+                "Balancear llantas con contrapesos centrados",
+                "Revisar amortiguadores (cambiar si fugan aceite)"
+            ],
+            [
+                "Limpiar sensor con alcohol isopropílico",
+                "Verificar resistencia del flotador (10-80Ω)",
+                "Revisar conexiones en el tablero",
+                "Resetear sistema de instrumentos",
+                "Reemplazar bomba de combustible completa"
+            ],
+            [
+                "Pulir con compuesto específico para carbono",
+                "Aplicar cera protectora cada 3 meses",
+                "Reemplazar tornillos por titanio",
+                "Lavar con jabón neutro y secar inmediatamente",
+                "Evitar productos abrasivos"
+            ]
+        ]
+    }
+},
+"Husqvarna": {
+    "Svartpilen 401": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Fugas en el sello de la horquilla",
+            "Problemas con el sistema de inyección",
+            "Desgaste de los rodamientos de rueda",
+            "Fallas en el sistema eléctrico",
+            "Sobrecalentamiento en tráfico"
+        ],
+        "soluciones": [
+            [
+                "Reemplazar sellos SKF",
+                "Limpiar tubos con alcohol isopropílico",
+                "Verificar nivel de aceite (5W)",
+                "Ajustar precarga correctamente",
+                "Instalar protectores de polvo"
+            ],
+            [
+                "Limpiar inyectores con equipo profesional",
+                "Verificar presión de combustible (3.5 bar)",
+                "Revisar sensor TPS",
+                "Actualizar firmware ECU",
+                "Reemplazar filtro de combustible"
+            ],
+            [
+                "Repackear grasa cada 15,000 km",
+                "Usar rodamientos SKF",
+                "Verificar sellos contra polvo",
+                "Apretar ejes a torque especificado (100 Nm)",
+                "Reemplazar en pareja"
+            ],
+            [
+                "Verificar conexiones a tierra",
+                "Revisar fusibles",
+                "Limpiar conectores con contacto limpia",
+                "Probar estator (debe dar 50V AC a 5,000 rpm)",
+                "Reemplazar regulador/rectificador si es necesario"
+            ],
+            [
+                "Instalar ventilador adicional",
+                "Usar refrigerante Engine Ice",
+                "Verificar termostato",
+                "Limpiar aletas del motor",
+                "Ajustar mezcla aire/combustible"
+            ]
+        ]
+    },
+    "Vitpilen 701": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Fallas en el sistema de frenos ABS",
+            "Problemas con el embrague",
+            "Fugas en el sistema de refrigeración",
+            "Error en el sensor de posición del acelerador",
+            "Vibraciones en el manubrio"
+        ],
+        "soluciones": [
+            [
+                "Actualizar software ABS con herramienta Husqvarna",
+                "Verificar sensores de rueda",
+                "Sangrear sistema con herramienta de presión",
+                "Limpiar anillos tonales",
+                "Revisar conexiones eléctricas"
+            ],
+            [
+                "Ajustar holgura del cable",
+                "Reemplazar discos si están gastados",
+                "Lubricar cojinete de empuje",
+                "Verificar resorte diafragma",
+                "Sangrar sistema hidráulico"
+            ],
+            [
+                "Reemplazar juntas del radiador",
+                "Verificar mangueras por grietas",
+                "Presurizar sistema para detectar fugas",
+                "Limpiar aletas del radiador",
+                "Usar refrigerante recomendado"
+            ],
+            [
+                "Calibrar sensor con herramienta Husqvarna",
+                "Verificar resistencia del sensor",
+                "Limpiar pista del potenciómetro",
+                "Revisar conexiones del arnés",
+                "Reemplazar si está fuera de especificaciones"
+            ],
+            [
+                "Balancear ruedas con contrapesos",
+                "Verificar cojinetes de dirección",
+                "Ajustar torque de la triple clamp",
+                "Revisar llantas por deformaciones",
+                "Instalar agarres antivibración"
+            ]
+        ]
+    },
+    "FE 450": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Desgaste rápido de la cadena",
+            "Problemas con el sistema de arranque eléctrico",
+            "Fugas en el sello de la horquilla",
+            "Sobrecalentamiento en terrenos difíciles",
+            "Fallas en el sensor de oxígeno"
+        ],
+        "soluciones": [
+            [
+                "Ajustar tensión cada 500 km",
+                "Lubricar con cadena específica",
+                "Reemplazar piñones junto con cadena",
+                "Verificar alineación de rueda trasera",
+                "Usar cadena O-ring de calidad"
+            ],
+            [
+                "Verificar batería (debe tener >12.6V)",
+                "Limpiar conexiones del solenoide",
+                "Revisar engranaje de arranque",
+                "Probar relé de arranque",
+                "Reemplazar motor de arranque si necesario"
+            ],
+            [
+                "Reemplazar sellos SKF",
+                "Limpiar tubos con alcohol",
+                "Verificar nivel de aceite",
+                "Ajustar precarga correctamente",
+                "Instalar protectores de polvo"
+            ],
+            [
+                "Instalar ventilador adicional",
+                "Usar refrigerante Engine Ice",
+                "Verificar termostato",
+                "Limpiar aletas del motor",
+                "Ajustar mezcla aire/combustible"
+            ],
+            [
+                "Limpiar sensor con contacto limpia",
+                "Verificar conexiones del arnés",
+                "Probar resistencia del sensor",
+                "Reemplazar si está fuera de especificaciones",
+                "Actualizar firmware ECU"
+            ]
+        ]
+    },
+    "TE 300i": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Problemas con el sistema de inyección",
+            "Fugas en el sello de la horquilla",
+            "Desgaste de los rodamientos de rueda",
+            "Fallas en el sistema eléctrico",
+            "Sobrecalentamiento en terrenos difíciles"
+        ],
+        "soluciones": [
+            [
+                "Limpiar inyectores con equipo profesional",
+                "Verificar presión de combustible",
+                "Revisar sensor TPS",
+                "Actualizar firmware ECU",
+                "Reemplazar filtro de combustible"
+            ],
+            [
+                "Reemplazar sellos SKF",
+                "Limpiar tubos con alcohol",
+                "Verificar nivel de aceite",
+                "Ajustar precarga correctamente",
+                "Instalar protectores de polvo"
+            ],
+            [
+                "Repackear grasa cada 15,000 km",
+                "Reemplazar si hay juego",
+                "Verificar sellos contra polvo",
+                "Usar rodamientos de calidad",
+                "Apretar ejes a torque especificado"
+            ],
+            [
+                "Verificar conexiones a tierra",
+                "Revisar fusibles",
+                "Limpiar conectores con contacto limpia",
+                "Probar estator (debe dar 50V AC a 5,000 rpm)",
+                "Reemplazar regulador/rectificador si es necesario"
+            ],
+            [
+                "Instalar ventilador adicional",
+                "Usar refrigerante Engine Ice",
+                "Verificar termostato",
+                "Limpiar aletas del motor",
+                "Ajustar mezcla aire/combustible"
+            ]
+        ]
+    },
+    "Norden 901": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Fallas en el sistema de frenos ABS",
+            "Problemas con el embrague",
+            "Fugas en el sistema de refrigeración",
+            "Error en el sensor de posición del acelerador",
+            "Vibraciones en el manubrio"
+        ],
+        "soluciones": [
+            [
+                "Actualizar software ABS con herramienta Husqvarna",
+                "Verificar sensores de rueda",
+                "Sangrear sistema con herramienta de presión",
+                "Limpiar anillos tonales",
+                "Revisar conexiones eléctricas"
+            ],
+            [
+                "Ajustar holgura del cable",
+                "Reemplazar discos si están gastados",
+                "Lubricar cojinete de empuje",
+                "Verificar resorte diafragma",
+                "Sangrar sistema hidráulico"
+            ],
+            [
+                "Reemplazar juntas del radiador",
+                "Verificar mangueras por grietas",
+                "Presurizar sistema para detectar fugas",
+                "Limpiar aletas del radiador",
+                "Usar refrigerante recomendado"
+            ],
+            [
+                "Calibrar sensor con herramienta Husqvarna",
+                "Verificar resistencia del sensor",
+                "Limpiar pista del potenciómetro",
+                "Revisar conexiones del arnés",
+                "Reemplazar si está fuera de especificaciones"
+            ],
+            [
+                "Balancear ruedas con contrapesos",
+                "Verificar cojinetes de dirección",
+                "Ajustar torque de la triple clamp",
+                "Revisar llantas por deformaciones",
+                "Instalar agarres antivibración"
+            ]
+        ]
+    }
+},
+"Indian Motorcycle": {
+    "Scout": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Fugas de aceite en el motor",
+            "Problemas con el sistema de inyección",
+            "Vibraciones excesivas",
+            "Fallas en el sistema eléctrico",
+            "Desgaste prematuro de neumáticos"
+        ],
+        "soluciones": [
+            [
+                "Reemplazar juntas del cárter (torque 18-20 lb-ft)",
+                "Verificar sellos del árbol de levas",
+                "Usar aceite 20W50",
+                "Limpiar respiradero de cárter",
+                "Inspeccionar tapones de inspección"
+            ],
+            [
+                "Limpiar inyectores con equipo profesional",
+                "Verificar presión de combustible (55-62 psi)",
+                "Revisar sensor TPS",
+                "Actualizar firmware ECU",
+                "Reemplazar filtro de combustible"
+            ],
+            [
+                "Balancear ruedas con contrapesos",
+                "Verificar cojinetes de dirección (torque 35-40 lb-ft)",
+                "Ajustar torque de la triple clamp",
+                "Revisar llantas por deformaciones",
+                "Instalar agarres antivibración"
+            ],
+            [
+                "Verificar conexiones a tierra",
+                "Revisar fusibles",
+                "Limpiar conectores con contacto limpia",
+                "Probar estator (debe dar 50V AC a 5,000 rpm)",
+                "Reemplazar regulador/rectificador si es necesario"
+            ],
+            [
+                "Mantener presión correcta (36 psi frío)",
+                "Rotar neumáticos cada 3,000 km",
+                "Usar compuestos más duros",
+                "Verificar alineación",
+                "Revisar suspensión trasera"
+            ]
+        ]
+    },
+    "Chief": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Fallas en el sistema de frenos ABS",
+            "Problemas con el embrague",
+            "Fugas en el sistema de refrigeración",
+            "Error en el sensor de posición del acelerador",
+            "Vibraciones en el manubrio"
+        ],
+        "soluciones": [
+            [
+                "Actualizar software ABS con herramienta Indian",
+                "Verificar sensores de rueda",
+                "Sangrear sistema con herramienta de presión",
+                "Limpiar anillos tonales",
+                "Revisar conexiones eléctricas"
+            ],
+            [
+                "Ajustar holgura del cable",
+                "Reemplazar discos si están gastados",
+                "Lubricar cojinete de empuje",
+                "Verificar resorte diafragma",
+                "Sangrar sistema hidráulico"
+            ],
+            [
+                "Reemplazar juntas del radiador",
+                "Verificar mangueras por grietas",
+                "Presurizar sistema para detectar fugas",
+                "Limpiar aletas del radiador",
+                "Usar refrigerante recomendado"
+            ],
+            [
+                "Calibrar sensor con herramienta Indian",
+                "Verificar resistencia del sensor",
+                "Limpiar pista del potenciómetro",
+                "Revisar conexiones del arnés",
+                "Reemplazar si está fuera de especificaciones"
+            ],
+            [
+                "Balancear ruedas con contrapesos",
+                "Verificar cojinetes de dirección",
+                "Ajustar torque de la triple clamp",
+                "Revisar llantas por deformaciones",
+                "Instalar agarres antivibración"
+            ]
+        ]
+    },
+    "Challenger": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Problemas con el sistema de navegación",
+            "Fugas en el sello de la horquilla",
+            "Desgaste de los rodamientos de rueda",
+            "Fallas en el sistema de inyección",
+            "Corrosión en componentes eléctricos"
+        ],
+        "soluciones": [
+            [
+                "Actualizar firmware del sistema",
+                "Verificar conexiones GPS",
+                "Resetear unidad principal",
+                "Reinstalar mapas",
+                "Probar con fuente de alimentación alternativa"
+            ],
+            [
+                "Reemplazar sellos Öhlins específicos",
+                "Limpiar tubos con alcohol isopropílico",
+                "Verificar nivel de aceite (7.5W)",
+                "Ajustar precarga correctamente",
+                "Instalar protectores de polvo"
+            ],
+            [
+                "Repackear grasa cada 15,000 km",
+                "Usar rodamientos SKF",
+                "Verificar sellos contra polvo",
+                "Apretar ejes a torque especificado (120 Nm)",
+                "Reemplazar en pareja"
+            ],
+            [
+                "Limpiar inyectores con equipo profesional",
+                "Verificar presión de combustible (55-62 psi)",
+                "Revisar sensor TPS",
+                "Actualizar firmware ECU",
+                "Reemplazar filtro de combustible"
+            ],
+            [
+                "Aplicar grasa dieléctrica en conectores",
+                "Reemplazar terminales oxidados",
+                "Usar cinta líquida en empalmes",
+                "Instalar protectores de cableado",
+                "Lavar con agua destilada después de lluvia salina"
+            ]
+        ]
+    },
+    "Springfield": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Fugas en el sistema de escape",
+            "Problemas con el embrague",
+            "Vibraciones en el piso",
+            "Fallas en el indicador de combustible",
+            "Corrosión en componentes cromados"
+        ],
+        "soluciones": [
+            [
+                "Reemplazar juntas de colector (torque 28 lb-ft)",
+                "Aplicar sellador de alta temperatura",
+                "Verificar soportes del escape",
+                "Limpiar superficies de contacto",
+                "Instalar nuevos anillos de retención"
+            ],
+            [
+                "Ajustar holgura del cable (1/8 pulgada)",
+                "Reemplazar discos si están azulados",
+                "Lubricar cojinete de empuje",
+                "Verificar resorte diafragma",
+                "Sangrar sistema con DOT 4"
+            ],
+            [
+                "Ajustar tornillos de motor (torque 45 lb-ft)",
+                "Instalar kit antivibración de goma",
+                "Verificar soportes del carenado",
+                "Balancear llantas con contrapesos centrados",
+                "Revisar amortiguadores (cambiar si fugan aceite)"
+            ],
+            [
+                "Limpiar sensor con alcohol isopropílico",
+                "Verificar resistencia del flotador (10-80Ω)",
+                "Revisar conexiones en el tablero",
+                "Resetear sistema de instrumentos",
+                "Reemplazar bomba de combustible completa"
+            ],
+            [
+                "Pulir con compuesto para cromo",
+                "Aplicar cera protectora cada 2 meses",
+                "Reemplazar tornillos por acero inoxidable",
+                "Lavar con jabón neutro y secar inmediatamente",
+                "Evitar exposición a salitre"
+            ]
+        ]
+    },
+    "FTR 1200": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Desgaste rápido de la cadena",
+            "Problemas con el sistema de arranque eléctrico",
+            "Fugas en el sello de la horquilla",
+            "Sobrecalentamiento en tráfico",
+            "Fallas en el sensor de oxígeno"
+        ],
+        "soluciones": [
+            [
+                "Ajustar tensión cada 500 km (1/2-3/4 pulgada juego)",
+                "Lubricar con cera para cadenas",
+                "Reemplazar piñones junto con cadena",
+                "Verificar alineación con láser",
+                "Usar cadena DID 520VX2"
+            ],
+            [
+                "Verificar batería (debe tener >12.6V)",
+                "Limpiar conexiones del solenoide",
+                "Revisar engranaje de arranque",
+                "Probar relé de arranque",
+                "Reemplazar motor de arranque si necesario"
+            ],
+            [
+                "Reemplazar sellos Öhlins específicos",
+                "Limpiar tubos con alcohol isopropílico",
+                "Verificar nivel de aceite (5W)",
+                "Ajustar precarga correctamente",
+                "Instalar protectores de polvo"
+            ],
+            [
+                "Instalar ventilador adicional",
+                "Usar refrigerante Engine Ice",
+                "Verificar termostato",
+                "Limpiar aletas del motor",
+                "Ajustar mezcla aire/combustible"
+            ],
+            [
+                "Limpiar sensor con contacto limpia",
+                "Verificar conexiones del arnés",
+                "Probar resistencia del sensor",
+                "Reemplazar si está fuera de especificaciones",
+                "Actualizar firmware ECU"
+            ]
+        ]
+    }
+},
+ "Piaggio": {
+    "Vespa GTS 300": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Fugas en el sello de la horquilla",
+            "Problemas con el variador",
+            "Desgaste de la correa",
+            "Fallas en el sistema de frenos",
+            "Corrosión en el chasis"
+        ],
+        "soluciones": [
+            ["Reemplazar sellos SKF", "Limpiar tubos con alcohol", "Usar aceite 10W", "Ajustar precarga", "Instalar protectores"],
+            ["Limpiar rodillos con alcohol", "Reemplazar rodillos si están desgastados", "Verificar polea móvil", "Lubricar guías", "Ajustar tensión"],
+            ["Reemplazar cada 10,000 km", "Verificar alineación de poleas", "Inspeccionar tensor", "Usar correa Gates Powerlink", "Evitar aceleraciones bruscas"],
+            ["Sangrear sistema con DOT 4", "Reemplazar pastillas orgánicas", "Lijar discos", "Verificar latiguillos", "Ajustar palanca"],
+            ["Pulir con abrasivo fino", "Aplicar protector anticorrosivo", "Revisar puntos de soldadura", "Lavar después de invierno", "Evitar salitre"]
+        ]
+    },
+    "Beverly 300": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Problemas con el sistema Start & Stop",
+            "Fugas en el depósito de combustible",
+            "Desgaste de los rodamientos de rueda",
+            "Fallas en el cuadro de instrumentos",
+            "Ruidos en la transmisión"
+        ],
+        "soluciones": [
+            ["Resetear sistema desconectando batería", "Verificar sensor de batería", "Limpiar conexiones", "Actualizar firmware", "Reemplazar relé si es necesario"],
+            ["Soldar con varilla de plástico", "Reemplazar juntas", "Verificar válvula de ventilación", "Limpiar área de sellos", "Usar sellador específico"],
+            ["Repackear grasa cada 15,000 km", "Usar rodamientos SKF", "Verificar sellos", "Apretar ejes a torque", "Reemplazar en pareja"],
+            ["Verificar conexión de 12 pines", "Resetear unidad", "Probar fusibles", "Revisar cableado", "Reemplazar LCD si es necesario"],
+            ["Ajustar tensión de la correa", "Lubricar rodillos", "Verificar poleas", "Reemplazar rodamientos", "Inspeccionar variador"]
+        ]
+    },
+    "Medley 150": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Arranque difícil en frío",
+            "Fugas en el carburador",
+            "Desgaste de pastillas de freno",
+            "Fallas en el sistema de carga",
+            "Vibraciones a media velocidad"
+        ],
+        "soluciones": [
+            ["Limpiar bujía (NGK CPR8EB-9)", "Verificar batería (>12.6V)", "Ajustar mezcla aire/combustible", "Usar gasolina sin etanol", "Precalentar con acelerador"],
+            ["Reemplazar juntas del carburador", "Ajustar tornillos (1.5 Nm)", "Limpiar válvula de enriquecedor", "Verificar nivel de flotador", "Sincronizar con manómetro"],
+            ["Reemplazar pastillas EBC FA179", "Lijar discos con papel 120 grit", "Verificar pistones de caliper", "Limpiar con alcohol", "Sangrear sistema"],
+            ["Probar estator (50V AC a 5,000 rpm)", "Reemplazar regulador/rectificador", "Limpiar conmutador", "Verificar tierra", "Revisar escobillas"],
+            ["Balancear ruedas", "Verificar cojinetes", "Ajustar torque de horquilla", "Revisar llantas", "Instalar contrapesos"]
+        ]
+    },
+    "Liberty 125": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Consumo excesivo de aceite",
+            "Problemas con el sensor de velocidad",
+            "Fugas en el sistema de escape",
+            "Fallas en las luces LED",
+            "Marcha mínima inestable"
+        ],
+        "soluciones": [
+            ["Verificar segmentos", "Usar aceite 5W40 sintético", "Revisar guías de válvulas", "Inspeccionar retenes", "Cambiar respiradero"],
+            ["Limpiar sensor con contacto limpia", "Verificar cableado", "Ajustar gap (0.5-1.5mm)", "Reemplazar si daña", "Probar con multímetro"],
+            ["Reemplazar juntas de colector", "Aplicar sellador de alta temperatura", "Verificar soportes", "Limpiar superficies", "Instalar anillos nuevos"],
+            ["Verificar conexiones", "Reemplazar módulo LED", "Probar fusibles", "Revisar interruptores", "Asegurar tierra"],
+            ["Ajustar mezcla aire/combustible", "Limpiar cuerpo de aceleración", "Verificar válvula IAC", "Resetear ECU", "Cambiar bujía"]
+        ]
+    },
+    "X10 350": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Problemas con el sistema ABS",
+            "Fugas en el sistema de refrigeración",
+            "Desgaste de la transmisión automática",
+            "Fallas en el sistema de navegación",
+            "Ruidos en el carenado"
+        ],
+        "soluciones": [
+            ["Actualizar software ABS", "Verificar sensores (1,000-1,500Ω)", "Sangrear sistema", "Limpiar anillos tonales", "Revisar módulo"],
+            ["Reemplazar juntas del radiador", "Usar refrigerante recomendado", "Verificar mangueras", "Presurizar sistema", "Limpiar aletas"],
+            ["Cambiar aceite de transmisión", "Verificar tensión de la correa", "Inspeccionar poleas", "Lubricar rodillos", "Reemplazar kit completo si es necesario"],
+            ["Actualizar mapas desde USB", "Resetear unidad", "Verificar antena GPS", "Reinstalar software", "Probar alimentación"],
+            ["Ajustar tornillos (5 Nm)", "Instalar arandelas de goma", "Verificar soportes", "Usar cinta antivibración", "Revisar ajuste de espejos"]
+        ]
+    }
+},      
+"Vespa": {
+    "Primavera 125": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Fugas en el sello de la horquilla",
+            "Problemas con el arranque eléctrico",
+            "Desgaste de los neumáticos",
+            "Fallas en el sistema de frenos",
+            "Corrosión en partes metálicas"
+        ],
+        "soluciones": [
+            ["Reemplazar sellos SKF", "Limpiar tubos con alcohol", "Usar aceite 10W", "Ajustar precarga", "Instalar protectores"],
+            ["Verificar batería (>12.6V)", "Limpiar conexiones del solenoide", "Revisar motor de arranque", "Probar relé", "Reemplazar si es necesario"],
+            ["Mantener presión (28 psi frío)", "Rotar neumáticos cada 5,000 km", "Usar Pirelli Angel Scooter", "Verificar alineación", "Revisar suspensión"],
+            ["Sangrear sistema con DOT 4", "Reemplazar pastillas orgánicas", "Lijar discos", "Verificar latiguillos", "Ajustar palanca"],
+            ["Pulir con abrasivo fino", "Aplicar protector anticorrosivo", "Revisar puntos de soldadura", "Lavar después de invierno", "Evitar salitre"]
+        ]
+    },
+    "GTS Super 300": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Problemas con el sistema Start & Stop",
+            "Fugas en el depósito de combustible",
+            "Desgaste de los rodamientos de rueda",
+            "Fallas en el cuadro de instrumentos",
+            "Ruidos en la transmisión"
+        ],
+        "soluciones": [
+            ["Resetear sistema desconectando batería", "Verificar sensor de batería", "Limpiar conexiones", "Actualizar firmware", "Reemplazar relé si es necesario"],
+            ["Soldar con varilla de plástico", "Reemplazar juntas", "Verificar válvula de ventilación", "Limpiar área de sellos", "Usar sellador específico"],
+            ["Repackear grasa cada 15,000 km", "Usar rodamientos SKF", "Verificar sellos", "Apretar ejes a torque", "Reemplazar en pareja"],
+            ["Verificar conexión de 12 pines", "Resetear unidad", "Probar fusibles", "Revisar cableado", "Reemplazar LCD si es necesario"],
+            ["Ajustar tensión de la correa", "Lubricar rodillos", "Verificar poleas", "Reemplazar rodamientos", "Inspeccionar variador"]
+        ]
+    },
+    "Sprint 150": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Arranque difícil en frío",
+            "Fugas en el carburador",
+            "Desgaste de pastillas de freno",
+            "Fallas en el sistema de carga",
+            "Vibraciones a media velocidad"
+        ],
+        "soluciones": [
+            ["Limpiar bujía (NGK CPR8EB-9)", "Verificar batería (>12.6V)", "Ajustar mezcla aire/combustible", "Usar gasolina sin etanol", "Precalentar con acelerador"],
+            ["Reemplazar juntas del carburador", "Ajustar tornillos (1.5 Nm)", "Limpiar válvula de enriquecedor", "Verificar nivel de flotador", "Sincronizar con manómetro"],
+            ["Reemplazar pastillas EBC FA179", "Lijar discos con papel 120 grit", "Verificar pistones de caliper", "Limpiar con alcohol", "Sangrear sistema"],
+            ["Probar estator (50V AC a 5,000 rpm)", "Reemplazar regulador/rectificador", "Limpiar conmutador", "Verificar tierra", "Revisar escobillas"],
+            ["Balancear ruedas", "Verificar cojinetes", "Ajustar torque de horquilla", "Revisar llantas", "Instalar contrapesos"]
+        ]
+    },
+    "Elettrica": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Autonomía reducida",
+            "Problemas con la carga",
+            "Fallas en el sistema de navegación",
+            "Ruidos en el carenado",
+            "Desgaste de frenos"
+        ],
+        "soluciones": [
+            ["Verificar estado de batería (capacidad >80%)", "Evitar cargas rápidas frecuentes", "Usar modo Eco en ciudad", "Mantener neumáticos a 36 psi", "Limitar velocidad máxima"],
+            ["Probar cargador con multímetro", "Verificar conexión en puerto", "Resetear sistema de carga", "Inspeccionar fusibles", "Reemplazar cable si es necesario"],
+            ["Actualizar mapas desde USB", "Resetear unidad", "Verificar antena GPS", "Reinstalar software", "Probar alimentación"],
+            ["Ajustar tornillos (5 Nm)", "Instalar arandelas de goma", "Verificar soportes", "Usar cinta antivibración", "Revisar ajuste de espejos"],
+            ["Reemplazar pastillas orgánicas", "Lijar discos", "Verificar latiguillos", "Ajustar palanca", "Sangrear sistema"]
+        ]
+    },
+    "946 Emporio Armani": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Fugas en el sistema de refrigeración",
+            "Problemas con el sistema de frenos",
+            "Desgaste de los neumáticos",
+            "Fallas en el sistema eléctrico",
+            "Corrosión en partes cromadas"
+        ],
+        "soluciones": [
+            ["Reemplazar juntas del radiador", "Usar refrigerante recomendado", "Verificar mangueras", "Presurizar sistema", "Limpiar aletas"],
+            ["Sangrear sistema con DOT 4", "Reemplazar pastillas orgánicas", "Lijar discos", "Verificar latiguillos", "Ajustar palanca"],
+            ["Mantener presión (28 psi frío)", "Rotar neumáticos cada 5,000 km", "Usar Pirelli Angel Scooter", "Verificar alineación", "Revisar suspensión"],
+            ["Verificar conexiones a tierra", "Probar fusibles", "Limpiar conectores", "Revisar relés", "Reemplazar cables dañados"],
+            ["Pulir con compuesto para cromo", "Aplicar cera protectora", "Reemplazar tornillos por acero inoxidable", "Lavar con jabón neutro", "Evitar salitre"]
+        ]
+    }
+},
+"Hero": {
+    "Splendor Plus": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Fugas en el carburador",
+            "Problemas con el arranque en frío",
+            "Desgaste de la cadena",
+            "Fallas en el sistema eléctrico",
+            "Vibraciones a altas RPM"
+        ],
+        "soluciones": [
+            ["Reemplazar juntas del carburador", "Ajustar tornillos (1.5 Nm)", "Limpiar válvula de enriquecedor", "Verificar nivel de flotador", "Sincronizar con manómetro"],
+            ["Limpiar bujía (NGK CR6HSA)", "Verificar batería (>12.6V)", "Ajustar mezcla aire/combustible", "Usar gasolina sin etanol", "Precalentar con acelerador"],
+            ["Ajustar tensión cada 500 km", "Lubricar con cera para cadenas", "Reemplazar piñones y cadena juntos", "Usar cadena DID 428H", "Verificar alineación"],
+            ["Verificar conexiones a tierra", "Probar estator (30V AC a 5,000 rpm)", "Reemplazar regulador/rectificador", "Limpiar conectores", "Revisar fusibles"],
+            ["Balancear ruedas", "Verificar cojinetes de dirección", "Ajustar torque de horquilla", "Revisar llantas", "Instalar contrapesos"]
+        ]
+    },
+    "Passion Pro": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Consumo excesivo de aceite",
+            "Problemas con el sensor de velocidad",
+            "Fugas en el sistema de escape",
+            "Fallas en las luces",
+            "Marcha mínima inestable"
+        ],
+        "soluciones": [
+            ["Verificar segmentos", "Usar aceite 20W50 mineral", "Revisar guías de válvulas", "Inspeccionar retenes", "Cambiar respiradero"],
+            ["Limpiar sensor con contacto limpia", "Verificar cableado", "Ajustar gap (0.5-1.5mm)", "Reemplazar si daña", "Probar con multímetro"],
+            ["Reemplazar juntas de colector", "Aplicar sellador de alta temperatura", "Verificar soportes", "Limpiar superficies", "Instalar anillos nuevos"],
+            ["Verificar conexiones", "Reemplazar bombillas", "Probar fusibles", "Revisar interruptores", "Asegurar tierra"],
+            ["Ajustar mezcla aire/combustible", "Limpiar cuerpo de aceleración", "Verificar válvula IAC", "Resetear ECU", "Cambiar bujía"]
+        ]
+    },
+    "Xtreme 200R": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Problemas con el sistema ABS",
+            "Fugas en el sistema de refrigeración",
+            "Desgaste de los neumáticos",
+            "Fallas en el sistema de inyección",
+            "Ruidos en el carenado"
+        ],
+        "soluciones": [
+            ["Actualizar software ABS", "Verificar sensores (1,000-1,500Ω)", "Sangrear sistema", "Limpiar anillos tonales", "Revisar módulo"],
+            ["Reemplazar juntas del radiador", "Usar refrigerante recomendado", "Verificar mangueras", "Presurizar sistema", "Limpiar aletas"],
+            ["Mantener presión (28 psi frío)", "Rotar neumáticos cada 5,000 km", "Usar MRF Revz", "Verificar alineación", "Revisar suspensión"],
+            ["Limpiar inyectores con equipo profesional", "Verificar presión de combustible", "Revisar sensor TPS", "Actualizar firmware ECU", "Reemplazar filtro"],
+            ["Ajustar tornillos (5 Nm)", "Instalar arandelas de goma", "Verificar soportes", "Usar cinta antivibración", "Revisar ajuste de espejos"]
+        ]
+    },
+    "Destini 125": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Fugas en el sello de la horquilla",
+            "Problemas con el variador",
+            "Desgaste de la correa",
+            "Fallas en el sistema de frenos",
+            "Corrosión en el chasis"
+        ],
+        "soluciones": [
+            ["Reemplazar sellos SKF", "Limpiar tubos con alcohol", "Usar aceite 10W", "Ajustar precarga", "Instalar protectores"],
+            ["Limpiar rodillos con alcohol", "Reemplazar rodillos si están desgastados", "Verificar polea móvil", "Lubricar guías", "Ajustar tensión"],
+            ["Reemplazar cada 10,000 km", "Verificar alineación de poleas", "Inspeccionar tensor", "Usar correa Gates Powerlink", "Evitar aceleraciones bruscas"],
+            ["Sangrear sistema con DOT 4", "Reemplazar pastillas orgánicas", "Lijar discos", "Verificar latiguillos", "Ajustar palanca"],
+            ["Pulir con abrasivo fino", "Aplicar protector anticorrosivo", "Revisar puntos de soldadura", "Lavar después de invierno", "Evitar salitre"]
+        ]
+    },
+    "Maestro Edge": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Problemas con el sistema Start & Stop",
+            "Fugas en el depósito de combustible",
+            "Desgaste de los rodamientos de rueda",
+            "Fallas en el cuadro de instrumentos",
+            "Ruidos en la transmisión"
+        ],
+        "soluciones": [
+            ["Resetear sistema desconectando batería", "Verificar sensor de batería", "Limpiar conexiones", "Actualizar firmware", "Reemplazar relé si es necesario"],
+            ["Soldar con varilla de plástico", "Reemplazar juntas", "Verificar válvula de ventilación", "Limpiar área de sellos", "Usar sellador específico"],
+            ["Repackear grasa cada 15,000 km", "Usar rodamientos SKF", "Verificar sellos", "Apretar ejes a torque", "Reemplazar en pareja"],
+            ["Verificar conexión de 12 pines", "Resetear unidad", "Probar fusibles", "Revisar cableado", "Reemplazar LCD si es necesario"],
+            ["Ajustar tensión de la correa", "Lubricar rodillos", "Verificar poleas", "Reemplazar rodamientos", "Inspeccionar variador"]
+        ]
+    }
+},      
+"Kymco": {
+    "Like 150": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Fugas en el sello de la horquilla",
+            "Problemas con el arranque eléctrico",
+            "Desgaste de los neumáticos",
+            "Fallas en el sistema de frenos",
+            "Corrosión en partes metálicas"
+        ],
+        "soluciones": [
+            ["Reemplazar sellos SKF", "Limpiar tubos con alcohol", "Usar aceite 10W", "Ajustar precarga", "Instalar protectores"],
+            ["Verificar batería (>12.6V)", "Limpiar conexiones del solenoide", "Revisar motor de arranque", "Probar relé", "Reemplazar si es necesario"],
+            ["Mantener presión (28 psi frío)", "Rotar neumáticos cada 5,000 km", "Usar Pirelli Angel Scooter", "Verificar alineación", "Revisar suspensión"],
+            ["Sangrear sistema con DOT 4", "Reemplazar pastillas orgánicas", "Lijar discos", "Verificar latiguillos", "Ajustar palanca"],
+            ["Pulir con abrasivo fino", "Aplicar protector anticorrosivo", "Revisar puntos de soldadura", "Lavar después de invierno", "Evitar salitre"]
+        ]
+    },
+    "Agility 125": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Problemas con el sistema Start & Stop",
+            "Fugas en el depósito de combustible",
+            "Desgaste de los rodamientos de rueda",
+            "Fallas en el cuadro de instrumentos",
+            "Ruidos en la transmisión"
+        ],
+        "soluciones": [
+            ["Resetear sistema desconectando batería", "Verificar sensor de batería", "Limpiar conexiones", "Actualizar firmware", "Reemplazar relé si es necesario"],
+            ["Soldar con varilla de plástico", "Reemplazar juntas", "Verificar válvula de ventilación", "Limpiar área de sellos", "Usar sellador específico"],
+            ["Repackear grasa cada 15,000 km", "Usar rodamientos SKF", "Verificar sellos", "Apretar ejes a torque", "Reemplazar en pareja"],
+            ["Verificar conexión de 12 pines", "Resetear unidad", "Probar fusibles", "Revisar cableado", "Reemplazar LCD si es necesario"],
+            ["Ajustar tensión de la correa", "Lubricar rodillos", "Verificar poleas", "Reemplazar rodamientos", "Inspeccionar variador"]
+        ]
+    },
+    "Xciting 400": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Arranque difícil en frío",
+            "Fugas en el carburador",
+            "Desgaste de pastillas de freno",
+            "Fallas en el sistema de carga",
+            "Vibraciones a media velocidad"
+        ],
+        "soluciones": [
+            ["Limpiar bujía (NGK CPR8EB-9)", "Verificar batería (>12.6V)", "Ajustar mezcla aire/combustible", "Usar gasolina sin etanol", "Precalentar con acelerador"],
+            ["Reemplazar juntas del carburador", "Ajustar tornillos (1.5 Nm)", "Limpiar válvula de enriquecedor", "Verificar nivel de flotador", "Sincronizar con manómetro"],
+            ["Reemplazar pastillas EBC FA179", "Lijar discos con papel 120 grit", "Verificar pistones de caliper", "Limpiar con alcohol", "Sangrear sistema"],
+            ["Probar estator (50V AC a 5,000 rpm)", "Reemplazar regulador/rectificador", "Limpiar conmutador", "Verificar tierra", "Revisar escobillas"],
+            ["Balancear ruedas", "Verificar cojinetes", "Ajustar torque de horquilla", "Revisar llantas", "Instalar contrapesos"]
+        ]
+    },
+    "Downtown 350": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Consumo excesivo de aceite",
+            "Problemas con el sensor de velocidad",
+            "Fugas en el sistema de escape",
+            "Fallas en las luces LED",
+            "Marcha mínima inestable"
+        ],
+        "soluciones": [
+            ["Verificar segmentos", "Usar aceite 5W40 sintético", "Revisar guías de válvulas", "Inspeccionar retenes", "Cambiar respiradero"],
+            ["Limpiar sensor con contacto limpia", "Verificar cableado", "Ajustar gap (0.5-1.5mm)", "Reemplazar si daña", "Probar con multímetro"],
+            ["Reemplazar juntas de colector", "Aplicar sellador de alta temperatura", "Verificar soportes", "Limpiar superficies", "Instalar anillos nuevos"],
+            ["Verificar conexiones", "Reemplazar módulo LED", "Probar fusibles", "Revisar interruptores", "Asegurar tierra"],
+            ["Ajustar mezcla aire/combustible", "Limpiar cuerpo de aceleración", "Verificar válvula IAC", "Resetear ECU", "Cambiar bujía"]
+        ]
+    },
+    "AK 550": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Problemas con el sistema ABS",
+            "Fugas en el sistema de refrigeración",
+            "Desgaste de la transmisión automática",
+            "Fallas en el sistema de navegación",
+            "Ruidos en el carenado"
+        ],
+        "soluciones": [
+            ["Actualizar software ABS", "Verificar sensores (1,000-1,500Ω)", "Sangrear sistema", "Limpiar anillos tonales", "Revisar módulo"],
+            ["Reemplazar juntas del radiador", "Usar refrigerante recomendado", "Verificar mangueras", "Presurizar sistema", "Limpiar aletas"],
+            ["Cambiar aceite de transmisión", "Verificar tensión de la correa", "Inspeccionar poleas", "Lubricar rodillos", "Reemplazar kit completo si es necesario"],
+            ["Actualizar mapas desde USB", "Resetear unidad", "Verificar antena GPS", "Reinstalar software", "Probar alimentación"],
+            ["Ajustar tornillos (5 Nm)", "Instalar arandelas de goma", "Verificar soportes", "Usar cinta antivibración", "Revisar ajuste de espejos"]
+        ]
+    }
+},
+"CFMoto": {
+    "300NK": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Fugas en el sello de la horquilla",
+            "Problemas con el arranque eléctrico",
+            "Desgaste de los neumáticos",
+            "Fallas en el sistema de frenos",
+            "Corrosión en partes metálicas"
+        ],
+        "soluciones": [
+            ["Reemplazar sellos SKF", "Limpiar tubos con alcohol", "Usar aceite 10W", "Ajustar precarga", "Instalar protectores"],
+            ["Verificar batería (>12.6V)", "Limpiar conexiones del solenoide", "Revisar motor de arranque", "Probar relé", "Reemplazar si es necesario"],
+            ["Mantener presión (28 psi frío)", "Rotar neumáticos cada 5,000 km", "Usar Pirelli Angel Scooter", "Verificar alineación", "Revisar suspensión"],
+            ["Sangrear sistema con DOT 4", "Reemplazar pastillas orgánicas", "Lijar discos", "Verificar latiguillos", "Ajustar palanca"],
+            ["Pulir con abrasivo fino", "Aplicar protector anticorrosivo", "Revisar puntos de soldadura", "Lavar después de invierno", "Evitar salitre"]
+        ]
+    },
+    "650MT": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Problemas con el sistema Start & Stop",
+            "Fugas en el depósito de combustible",
+            "Desgaste de los rodamientos de rueda",
+            "Fallas en el cuadro de instrumentos",
+            "Ruidos en la transmisión"
+        ],
+        "soluciones": [
+            ["Resetear sistema desconectando batería", "Verificar sensor de batería", "Limpiar conexiones", "Actualizar firmware", "Reemplazar relé si es necesario"],
+            ["Soldar con varilla de plástico", "Reemplazar juntas", "Verificar válvula de ventilación", "Limpiar área de sellos", "Usar sellador específico"],
+            ["Repackear grasa cada 15,000 km", "Usar rodamientos SKF", "Verificar sellos", "Apretar ejes a torque", "Reemplazar en pareja"],
+            ["Verificar conexión de 12 pines", "Resetear unidad", "Probar fusibles", "Revisar cableado", "Reemplazar LCD si es necesario"],
+            ["Ajustar tensión de la correa", "Lubricar rodillos", "Verificar poleas", "Reemplazar rodamientos", "Inspeccionar variador"]
+        ]
+    },
+    "250SR": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Arranque difícil en frío",
+            "Fugas en el carburador",
+            "Desgaste de pastillas de freno",
+            "Fallas en el sistema de carga",
+            "Vibraciones a media velocidad"
+        ],
+        "soluciones": [
+            ["Limpiar bujía (NGK CPR8EB-9)", "Verificar batería (>12.6V)", "Ajustar mezcla aire/combustible", "Usar gasolina sin etanol", "Precalentar con acelerador"],
+            ["Reemplazar juntas del carburador", "Ajustar tornillos (1.5 Nm)", "Limpiar válvula de enriquecedor", "Verificar nivel de flotador", "Sincronizar con manómetro"],
+            ["Reemplazar pastillas EBC FA179", "Lijar discos con papel 120 grit", "Verificar pistones de caliper", "Limpiar con alcohol", "Sangrear sistema"],
+            ["Probar estator (50V AC a 5,000 rpm)", "Reemplazar regulador/rectificador", "Limpiar conmutador", "Verificar tierra", "Revisar escobillas"],
+            ["Balancear ruedas", "Verificar cojinetes", "Ajustar torque de horquilla", "Revisar llantas", "Instalar contrapesos"]
+        ]
+    },
+    "700CL-X": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Consumo excesivo de aceite",
+            "Problemas con el sensor de velocidad",
+            "Fugas en el sistema de escape",
+            "Fallas en las luces LED",
+            "Marcha mínima inestable"
+        ],
+        "soluciones": [
+            ["Verificar segmentos", "Usar aceite 5W40 sintético", "Revisar guías de válvulas", "Inspeccionar retenes", "Cambiar respiradero"],
+            ["Limpiar sensor con contacto limpia", "Verificar cableado", "Ajustar gap (0.5-1.5mm)", "Reemplazar si daña", "Probar con multímetro"],
+            ["Reemplazar juntas de colector", "Aplicar sellador de alta temperatura", "Verificar soportes", "Limpiar superficies", "Instalar anillos nuevos"],
+            ["Verificar conexiones", "Reemplazar módulo LED", "Probar fusibles", "Revisar interruptores", "Asegurar tierra"],
+            ["Ajustar mezcla aire/combustible", "Limpiar cuerpo de aceleración", "Verificar válvula IAC", "Resetear ECU", "Cambiar bujía"]
+        ]
+    },
+    "800MT": {
+        "año": "actualizado",
+        "problemas_comunes": [
+            "Problemas con el sistema ABS",
+            "Fugas en el sistema de refrigeración",
+            "Desgaste de la transmisión",
+            "Fallas en el sistema de navegación",
+            "Ruidos en el carenado"
+        ],
+        "soluciones": [
+            ["Actualizar software ABS", "Verificar sensores (1,000-1,500Ω)", "Sangrear sistema", "Limpiar anillos tonales", "Revisar módulo"],
+            ["Reemplazar juntas del radiador", "Usar refrigerante recomendado", "Verificar mangueras", "Presurizar sistema", "Limpiar aletas"],
+            ["Cambiar aceite de transmisión", "Verificar tensión de la correa", "Inspeccionar poleas", "Lubricar rodillos", "Reemplazar kit completo si es necesario"],
+            ["Actualizar mapas desde USB", "Resetear unidad", "Verificar antena GPS", "Reinstalar software", "Probar alimentación"],
+            ["Ajustar tornillos (5 Nm)", "Instalar arandelas de goma", "Verificar soportes", "Usar cinta antivibración", "Revisar ajuste de espejos"]
+        ]
+    }
+}
+};        
+
+        // Base de datos de sonidos
+        const sonidosMotos = {
+            "Honda": "https://www.soundjay.com/mechanical/sounds/motorcycle-01.mp3",
+            "Kawasaki": "https://www.soundjay.com/mechanical/sounds/motorcycle-02.mp3",
+            "default": "https://www.soundjay.com/mechanical/sounds/motorcycle-03.mp3"
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const marcaSelect = document.getElementById('marcaSelect');
+            const modeloSelect = document.getElementById('modeloSelect');
+            const buscarBtn = document.getElementById('buscarBtn');
+            const favoritoBtn = document.getElementById('favoritoBtn');
+            const searchInput = document.getElementById('searchInput');
+            const favoritosSelect = document.getElementById('favoritosSelect');
+            const resultContainer = document.getElementById('resultContainer');
+            const audioPlayer = document.getElementById('motoSound');
+            
+            // Función para mostrar notificación toast
+            function mostrarToast(mensaje, esExito = true) {
+                const toast = document.createElement('div');
+                toast.className = `toast ${esExito ? 'toast-exito' : 'toast-error'}`;
+                toast.textContent = mensaje;
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.classList.add('mostrar');
+                }, 10);
+                
+                setTimeout(() => {
+                    toast.classList.remove('mostrar');
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }
+
+            // Función para reproducir sonido de moto
+            function playMotoSound(marca) {
+                const soundUrl = sonidosMotos[marca] || sonidosMotos.default;
+                audioPlayer.src = soundUrl;
+                audioPlayer.currentTime = 0;
+                audioPlayer.play().catch(e => console.log("Audio no reproducido:", e));
+            }
+
+            // Función para resaltar texto de búsqueda
+            function highlightText(text, searchTerm) {
+                if (!searchTerm) return text;
+                const regex = new RegExp(`(${searchTerm})`, 'gi');
+                return text.replace(regex, '<span class="search-highlight">$1</span>');
+            }
+
+            // Función para realizar la búsqueda
+            function performSearch(searchTerm) {
+                const problemas = document.querySelectorAll('.problema-item');
+                const motoCard = document.querySelector('.moto-card');
+                let resultadosEncontrados = 0;
+                
+                if (!motoCard) return;
+
+                searchTerm = searchTerm.toLowerCase().trim();
+                
+                problemas.forEach(problema => {
+                    const titulo = problema.querySelector('.problema-titulo');
+                    const textoOriginal = titulo.dataset.original || titulo.textContent;
+                    titulo.dataset.original = textoOriginal;
+                    
+                    if (searchTerm === '' || textoOriginal.toLowerCase().includes(searchTerm)) {
+                        problema.style.display = 'block';
+                        titulo.innerHTML = highlightText(textoOriginal, searchTerm);
+                        resultadosEncontrados++;
+                    } else {
+                        problema.style.display = 'none';
+                        titulo.innerHTML = textoOriginal;
+                    }
+                });
+
+                // Actualizar estado de búsqueda
+                const searchStatus = document.querySelector('.search-status') || document.createElement('div');
+                searchStatus.className = 'search-status';
+                
+                if (searchTerm === '') {
+                    searchStatus.textContent = '';
+                } else if (resultadosEncontrados === 0) {
+                    searchStatus.textContent = 'No se encontraron coincidencias';
+                    const noResults = document.querySelector('.no-results') || document.createElement('div');
+                    noResults.className = 'no-results';
+                    noResults.textContent = 'No hay problemas que coincidan con tu búsqueda';
+                    if (!document.querySelector('.no-results')) {
+                        document.querySelector('.problema-list').appendChild(noResults);
+                    }
+                } else {
+                    searchStatus.textContent = `${resultadosEncontrados} ${resultadosEncontrados === 1 ? 'resultado' : 'resultados'} encontrados`;
+                    const noResults = document.querySelector('.no-results');
+                    if (noResults) noResults.remove();
+                }
+
+                if (!document.querySelector('.search-status')) {
+                    motoCard.querySelector('.moto-header').appendChild(searchStatus);
+                }
+            }
+
+            // Cargar marcas al iniciar
+            Object.keys(motos_db).sort().forEach(marca => {
+                const option = document.createElement('option');
+                option.value = marca;
+                option.textContent = marca;
+                marcaSelect.appendChild(option);
+            });
+            
+            // Cargar modelos cuando se selecciona marca
+            marcaSelect.addEventListener('change', function() {
+                modeloSelect.innerHTML = '<option value="">Selecciona un modelo</option>';
+                modeloSelect.disabled = !this.value;
+                
+                if (this.value) {
+                    Object.keys(motos_db[this.value]).sort().forEach(modelo => {
+                        const option = document.createElement('option');
+                        option.value = modelo;
+                        option.textContent = modelo;
+                        modeloSelect.appendChild(option);
+                    });
+                }
+            });
+            
+            // Buscar soluciones
+            buscarBtn.addEventListener('click', function() {
+                const marca = marcaSelect.value;
+                const modelo = modeloSelect.value;
+                
+                if (!marca || !modelo) {
+                    mostrarToast("⚠️ Selecciona una marca y modelo primero.", false);
+                    return;
+                }
+                
+                // Reproducir sonido de la moto
+                playMotoSound(marca);
+                
+                // Mostrar loading
+                resultContainer.innerHTML = `
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>Buscando soluciones para ${marca} ${modelo}...</p>
+                    </div>
+                `;
+                
+                // Simular carga
+                setTimeout(() => {
+                    const info = motos_db[marca][modelo];
+                    let html = `
+                        <div class="moto-card">
+                            <div class="moto-header">
+                                <h2 class="moto-title">${marca} ${modelo}</h2>
+                                <span class="moto-year">${info.año}</span>
+                            </div>
+                            <ul class="problema-list">
+                    `;
+                    
+                    info.problemas_comunes.forEach((problema, index) => {
+                        html += `
+                            <li class="problema-item">
+                                <div class="problema-titulo" data-original="${problema}">${problema}</div>
+                                <div class="solucion">
+                                    ${info.soluciones[index].map(sol => `
+                                        <div class="solucion-item">${sol}</div>
+                                    `).join('')}
+                                </div>
+                            </li>
+                        `;
+                    });
+                    
+                    html += `</ul></div>`;
+                    resultContainer.innerHTML = html;
+                    searchInput.value = ''; // Limpiar campo de búsqueda
+                }, 500);
+            });
+
+            // Búsqueda en tiempo real
+            searchInput.addEventListener('input', function(e) {
+                performSearch(e.target.value);
+            });
+
+            // Cargar favoritos al iniciar
+            function cargarFavoritos() {
+                const favoritos = JSON.parse(localStorage.getItem('motoFavoritos')) || [];
+                favoritosSelect.innerHTML = '<option value="">-- Tus favoritos --</option>';
+                
+                favoritos.forEach((fav, index) => {
+                    const option = document.createElement('option');
+                    option.value = index;
+                    option.textContent = `${fav.marca} ${fav.modelo}`;
+                    favoritosSelect.appendChild(option);
+                });
+            }
+
+            // Guardar en favoritos
+            favoritoBtn.addEventListener('click', function() {
+                const marca = marcaSelect.value;
+                const modelo = modeloSelect.value;
+                
+                if (!marca || !modelo) {
+                    mostrarToast("⚠️ Selecciona una marca y modelo primero.", false);
+                    return;
+                }
+                
+                const favoritos = JSON.parse(localStorage.getItem('motoFavoritos')) || [];
+                const nuevoFavorito = { marca, modelo };
+                
+                if (!favoritos.some(fav => fav.marca === marca && fav.modelo === modelo)) {
+                    favoritos.push(nuevoFavorito);
+                    localStorage.setItem('motoFavoritos', JSON.stringify(favoritos));
+                    mostrarToast(`⭐ ${marca} ${modelo} añadido a favoritos.`);
+                    cargarFavoritos();
+                } else {
+                    mostrarToast("⚠️ Este modelo ya está en tus favoritos.", false);
+                }
+            });
+
+            // Cargar favorito seleccionado
+            favoritosSelect.addEventListener('change', function() {
+                const favoritos = JSON.parse(localStorage.getItem('motoFavoritos')) || [];
+                const seleccionado = favoritos[this.value];
+                
+                if (seleccionado) {
+                    marcaSelect.value = seleccionado.marca;
+                    marcaSelect.dispatchEvent(new Event('change'));
+                    
+                    setTimeout(() => {
+                        modeloSelect.value = seleccionado.modelo;
+                        buscarBtn.click();
+                    }, 100);
+                }
+            });
+
+            // Inicializar favoritos
+            cargarFavoritos();
+        });
+    </script>
+</body>
+</html>
